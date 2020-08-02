@@ -15,12 +15,20 @@ author:	peter_man
 
 ## what we need
 - terrain generation
-	- [Voxel Tools for Godot](https://github.com/Zylann/godot_voxel)
-		- requires use of module -> needs to be compiled in
-		- custom binaries are available
 - global illumination
 	- might be enabled by default in the voxel demos
 
+## voxels
+- [Voxel Tools for Godot](https://github.com/Zylann/godot_voxel)
+	- requires use of module -> needs to be compiled in
+	- custom binaries are available
+- [How To Make A 3D Voxel Terrain In Godot Engine 3.1-3.2 Tutorial](https://www.youtube.com/watch?v=zfzmcbR1H_0)
+- [Game Demos for Voxel Tools for Godot](https://github.com/tinmanjuggernaut/voxelgame)
+- [Smooth Voxel Terrain Generation In Godot](https://www.youtube.com/watch?v=i-AskdAeOnI)
+- **[Godot Voxel Tools](https://www.youtube.com/watch?v=WxZK_Yg5kU0)**
+
+## lighting
+- [Open World Environment Lighting Godot Engine 3D Tutorial](https://www.youtube.com/watch?v=8kwnCxK8Vc8)
 
 ## misc
 - [Godot Recipe: 3D KinematicBody: Align with terrain](https://www.youtube.com/watch?v=7axJJYont6Y)
