@@ -11,6 +11,6 @@
 - just how much screwing around can you tolerate?
 
 ## HELP!
-- see [the getting started guide](support/doc/dev/getting_started.md) before you begin!
+- see [the getting started guide](https://github.com/peter201943/pdf-golf/wiki/getting-started) before you begin!
 
 
