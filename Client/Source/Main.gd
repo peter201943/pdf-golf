@@ -1,5 +1,5 @@
 extends Control
-
+"""briefly describe why this is here""" # FIXME (documentation missing)
 
 func _ready():
 	network.connect("connection_failed", self, "_on_connection_failed")
