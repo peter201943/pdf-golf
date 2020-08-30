@@ -1,6 +1,8 @@
 extends KinematicBody
 
-onready var camera = $Pivot/Camera
+"""briefly describe why this is here""" # FIXME (documentation missing)
+
+onready var camera = $Pivot/Camera # FIXME (fragile link; make external)
 
 const MOTION_SPEED = 8
 
@@ -19,13 +21,14 @@ export var mouse_sensitivity = 0.003
 var last_motion
 var last_transform
 
-onready var knight = $knight
+onready var knight = $knight # FIXME (fragile link; make external)
 var last_anim = 'idle'
 
 
 func _ready():
-	$HUD/Panel.hide()
-	$HUD/Players.hide()
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	$HUD/Panel.hide() # FIXME (fragile link; make external)
+	$HUD/Players.hide() # FIXME (fragile link; make external)
 	if is_network_master():
 		camera.current = true
 		set_color()
@@ -34,7 +37,8 @@ func _ready():
 
 
 func set_color():
-	var material = $Model.get_surface_material(0)
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	var material = $Model.get_surface_material(0) # FIXME (fragile link; make external)
 	random_number_generator.randomize()
 	var r = random_number_generator.randf_range(0.0, 1.0)
 	random_number_generator.randomize()
@@ -46,23 +50,25 @@ func set_color():
 
 
 func _unhandled_input(event):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	var mouse_motion = event is InputEventMouseMotion
 	var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
-			$HUD/Panel.hide()
+			$HUD/Panel.hide() # FIXME (fragile link; make external)
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			release_mouse()
-			$HUD/Panel.show()
+			$HUD/Panel.show() # FIXME (fragile link; make external)
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
-		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity) # FIXME (fragile link; make external)
 		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.4)
 
 
-func _physics_process(delta):
+func _physics_process(delta): # FIXME REFACTOR (overly long method; too many responsibilities)
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	motion.x = 0
 	motion.z = 0
 	
@@ -120,44 +126,53 @@ func _physics_process(delta):
 
 
 func set_player_name(player):
-	$Name/Viewport/GUI/Player.text = player
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	$Name/Viewport/GUI/Player.text = player # FIXME (fragile link; make external)
 
 
 func _on_cancel_button_pressed():
-	$HUD/Panel.hide()
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	$HUD/Panel.hide() # FIXME (fragile link; make external)
 	release_mouse()
 
 
 func capture_mouse():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func release_mouse():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _on_quit_button_pressed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	get_tree().set_network_peer(null)
 	network.end_game()
 
 
 func update_list():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	$HUD/Players/List.clear()
 	for player in network.players:
-		$HUD/Players/List.add_item(network.players[player])
+		$HUD/Players/List.add_item(network.players[player]) # FIXME (fragile link; make external)
 
 
 func _process(delta):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	handle_input()
 
 
 func handle_input():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	if Input.is_action_just_pressed("tab"):
 		update_list()
-		$HUD/Players.show()
+		$HUD/Players.show() # FIXME (fragile link; make external)
 	if Input.is_action_just_released("tab"):
-		$HUD/Players.hide()
+		$HUD/Players.hide() # FIXME (fragile link; make external)
 
 
 puppet func play_anim(anim):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	knight.play_anim(anim)

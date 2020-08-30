@@ -14,14 +14,14 @@ var last_transform
 
 
 func _ready():
-	"""briefly describe why this is here""" # FIXME
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	get_tree().connect("network_peer_connected", self, "player_connected")
 	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
 	host_game()
 
 
 remote func register_player(player_name):
-	"""briefly describe why this is here""" # FIXME
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	var sender = get_tree().get_rpc_sender_id()
 	players[sender] = player_name
 	load_player(sender)

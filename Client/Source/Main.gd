@@ -2,6 +2,7 @@ extends Control
 """briefly describe why this is here""" # FIXME (documentation missing)
 
 func _ready():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_success")
 	network.connect("game_ended", self, "_on_game_ended")
@@ -19,10 +20,12 @@ func _ready():
 
 
 func _on_quit_button_pressed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	get_tree().quit()
 
 
 func _on_join_button_pressed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	var player_name = $Name/Value.text
 	if $Name/Value.text == "":
 		$Info.text = "Invalid name"
@@ -40,6 +43,7 @@ func _on_join_button_pressed():
 
 
 func disable_ui(message=""):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	$Buttons/join_button.disabled = true
 	$Name/Value.editable = false
 	$IP/Value.editable = false
@@ -48,6 +52,7 @@ func disable_ui(message=""):
 
 
 func enable_ui(message="", connected=false):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	$Buttons/join_button.disabled = false
 	$Name/Value.editable = true
 	$IP/Value.editable = true
@@ -60,18 +65,22 @@ func enable_ui(message="", connected=false):
 
 
 func _on_game_error(error_text):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	enable_ui(error_text)
 
 
 func _on_game_ended():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	show()
 	enable_ui()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _on_connection_failed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	enable_ui("connection failed")
 
 
 func _on_connection_success():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	enable_ui("connected!", true)
