@@ -8,7 +8,7 @@ signal game_ended()
 signal game_error(what)
 
 var player_scene = load("res://Source/Player.tscn")
-var map = "base"
+var map = "base" # map_name
 
 var players = {}
 
@@ -81,7 +81,7 @@ remote func add_player(id, last_transform, player_name):
 
 
 func player_connected(id):
-	print("Player: " + str(id) + " just joined the game")
+	print("Player: " + str(id) + " just joined " + player_name + "'s game")
 
 
 func player_disconnected(id):
