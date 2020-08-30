@@ -28,7 +28,7 @@ func _on_join_button_pressed():
 		$Info.text = "Invalid name"
 		return
 	
-	var ip = $IP/Value.text
+	var ip = $IP/Value.text.replace(" ", "")
 	if !ip.is_valid_ip_address():
 		$Info.text = "Invalid IP!"
 		return
