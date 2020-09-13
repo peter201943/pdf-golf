@@ -49,30 +49,45 @@ remote func register_player(other_player_name):
 	"""
 	A request from a player to join this server's session
 	"""
+	
 	# get their id
 	var sender = get_tree().get_rpc_sender_id()
+	
 	# add their id and name to our list
 	if other_player_name == "":
 		no_name_count += 1
 		other_player_name = "No-Name-" + str(no_name_count)
 	players[sender] = other_player_name
+	
 	# load them
 	load_player(sender)
 
 
 func player_connected(id):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("THIS SERVER connected THEIR PLAYER (" + str(id) + ")") # FIXME (no perspective (who is saying this?) (QUALIFY))
+	"""log a successful connection"""
+	print("I (SERVER) connected THEM (PLAYER #" + str(id) + ")")
 
 
 func load_player(id):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	Load a connecting player onto everyone's instance of the game
+	"""
+	
+	# Tell the player to load the current map
 	rpc_id(id, "load_map", map_name)
+	
+	# refresh map variables
 	var root = get_tree().get_root()
 	var world = root.get_node(map_name)
+	
+	# tell EACH CURRENT PLAYER to add the new player to THEIR instance of the game
 	for player in world.get_node("Players").get_children(): # FIXME (fragile link; make external)
 		rpc_id(id, 'add_player', int(player.name), player.transform, players[int(player.name)])
+	
+	# WE add the new player to OUR instance of the game
 	add_player(id)
+	
+	# tell the NEW PLAYER to add themselves to THEIR instance of the game
 	rpc('add_player', id, next_spawn_transform, players[id])
 
 
@@ -153,9 +168,9 @@ func add_player(id):
 	- spawns the model randomly
 	"""
 	
-	# update map info
+	# Refresh map properties
 	var root = get_tree().get_root() # FIXME (make permanent variable)
-	var world = root.get_node(map_name)
+	var world = root.get_node(map_name) # FIXME (make permanent variable)
 	
 	# set the spawn point for this player
 	randomize()
@@ -164,9 +179,13 @@ func add_player(id):
 	next_spawn_transform = spawn_point.transform
 	
 	# Make a new character for each connecting player
+	print("SERVER adding player...") # DELETEME (temp debug)
 	var player = player_scene.instance()
+	
+	# set networking properties of player
 	player.set_name(str(id))
 	player.transform = spawn_point.transform
 	player.set_network_master(id)
 	world.get_node("Players").add_child(player)  # FIXME (fragile link; make external)
+	print("CLIENT adding player... done") # DELETEME (temp debug)
 	

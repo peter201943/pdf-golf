@@ -99,23 +99,38 @@ remote func load_map(map_name):
 
 
 remote func add_player(id, last_transform, other_player_name): # FIXME REFACTOR (long method; low cohesion)
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	yield(get_tree().create_timer(1.0), "timeout")
-	var root = get_tree().get_root()
-	var world = root.get_node(map)
+	"""
+	Allow a server to add a new PUPPET player to OUR game
+	"""
 	
+	# Spawn timer (don't let millions spawn in instantly)
+	yield(get_tree().create_timer(1.0), "timeout")
+	
+	# Refresh map properties
+	var root = get_tree().get_root() # FIXME (make permanent variable)
+	var world = root.get_node(map) # FIXME (make permanent variable)
+	
+	# Instantiate a player
+	print("CLIENT adding player...") # DELETEME (temp debug)
 	var player = player_scene.instance()
 	
+	# set networking properties of player
 	player.set_name(str(id))
 	player.transform = last_transform
 	player.set_network_master(id)
-	player.set_player_name(other_player_name)
+	world.get_node("Players").add_child(player) # TEMP (See if this works)
 	
+	# NOTE: the player MUST be instantiated BEFORE you can call this line!
+	# (member will not exist until `_ready()` is called)
+	player.display_name.text = other_player_name
+	
+	# Add player to players list
 	players[id] = other_player_name
+	print("CLIENT adding player... done") # DELETEME (temp debug)
 	
-	world.get_node("Players").add_child(player)
-	
+	# ???
 	if id == get_tree().get_network_unique_id():
+		print("HIDING MAIN!")
 		root.get_node("Main").hide()
 
 

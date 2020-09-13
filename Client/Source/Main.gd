@@ -9,9 +9,13 @@ func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	
 	print("CLIENT.Main.Main._ready = loading")
+	# warning-ignore:return_value_discarded
 	network.connect("connection_failed",    self, "_on_connection_failed")
+	# warning-ignore:return_value_discarded
 	network.connect("connection_succeeded", self, "_on_connection_success")
+	# warning-ignore:return_value_discarded
 	network.connect("game_ended",           self, "_on_game_ended")
+	# warning-ignore:return_value_discarded
 	network.connect("game_error",           self, "_on_game_error")
 	
 	if OS.has_environment("USERNAME"):

@@ -41,7 +41,7 @@ var knight
 var players_menu: ColorRect
 var players_list: ItemList
 var pause_menu: ColorRect
-var player_name: Label
+var display_name: Label
 
 
 func _ready():
@@ -58,7 +58,7 @@ func _ready():
 	pause_menu = $HUD/Panel # FIXME (fragile link; make external)
 	camera = $Pivot/Camera # FIXME (fragile link; make external)
 	pivot = $Pivot # FIXME (fragile link; make external)
-	player_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
+	display_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
 	knight = $knight # FIXME (fragile link; make external)
 	
 	# Hide all the Menus
@@ -103,6 +103,7 @@ func _physics_process(delta):
 	# FIXME REFACTOR (overly long method; too many responsibilities)
 	# FIXME (differs from `Client/Source/Player.gd`)
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	
 	motion.x = 0
 	motion.z = 0
 	
@@ -132,12 +133,9 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			motion.y = jump_power
 		
-		var anim
-		
+		var anim = "idle"
 		if motion.x != 0 or motion.z != 0:
 			anim = "walk"
-		else:
-			anim = "idle"
 		
 		play_anim(anim)
 		if last_motion != motion:
@@ -156,11 +154,6 @@ func _physics_process(delta):
 	motion = move_and_slide(motion, Vector3.UP, true)
 	if not is_network_master():
 		puppet_transform = transform
-
-
-func set_player_name(player):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	player_name.text = player
 
 
 func _on_cancel_button_pressed():
@@ -201,3 +194,4 @@ func handle_input():
 puppet func play_anim(anim):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	knight.play_anim(anim)
+

@@ -42,7 +42,7 @@ var last_anim = 'idle' # FIXME (what is this and why is it only in client?)
 var players_menu: ColorRect
 var players_list: ItemList
 var pause_menu: ColorRect
-var player_name: Label
+var display_name: Label
 
 
 func _ready():
@@ -59,7 +59,7 @@ func _ready():
 	pause_menu = $HUD/Panel # FIXME (fragile link; make external)
 	camera = $Pivot/Camera # FIXME (fragile link; make external)
 	pivot = $Pivot # FIXME (fragile link; make external)
-	player_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
+	display_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
 	knight = $knight # FIXME (fragile link; make external)
 	
 	# Hide all the Menus
@@ -159,15 +159,16 @@ func _physics_process(delta):
 		puppet_transform = transform
 
 
-func set_player_name(player):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	player_name.text = player
-
-
 func _on_cancel_button_pressed():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	pause_menu.hide()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func _on_quit_button_pressed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	get_tree().set_network_peer(null)
+	network.end_game()
 
 
 func capture_mouse():
@@ -178,12 +179,6 @@ func capture_mouse():
 func release_mouse():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-
-func _on_quit_button_pressed():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	get_tree().set_network_peer(null)
-	network.end_game()
 
 
 func update_list():
