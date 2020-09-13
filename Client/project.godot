@@ -15,7 +15,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Client"
+config/name="Griefers Golf CLIENT"
+config/description="The (TEMPORARY) client project of Griefer's Golf (Project Dayfairer)"
 run/main_scene="res://Source/Main.tscn"
 config/icon="res://icon.png"
 
