@@ -41,9 +41,6 @@ var players_list: ItemList  # the actual list of players
 var pause_menu: ColorRect   # allows players to exit during game
 var display_name: Label     # floating name-tag above player
 
-# Debugging
-var unsaid = true # tell if we are a puppet or not
-
 
 func _ready():
 	"""
@@ -65,9 +62,12 @@ func _ready():
 	pause_menu.hide() # FIXME (non external variable for fragile link!)
 	players_menu.hide() # FIXME (non external variable for fragile link!)
 	
-	# ???
+	# Network Setup
 	if is_network_master():
 		camera.current = true
+		print("I AM NOT A PUPPET!")
+	else:
+		print("I am a puppet...")
 	
 	# Reset global variables
 	puppet_transform = transform
@@ -122,11 +122,6 @@ func _physics_process(delta):
 	# If this is not an instance of a PUPPET
 	if is_network_master():
 		
-		# DELETEME (Debug only, temp)
-		if unsaid:
-			print("I AM NOT A PUPPET!")
-			unsaid = false
-		
 		direction.y = 0
 		if Input.is_action_pressed("move_forward"):
 			direction -= camera_basis.z
@@ -166,29 +161,27 @@ func _physics_process(delta):
 		
 	else:
 		
-		# DELETEME (Debug only, temp)
-		if unsaid:
-			print("...I am a puppet...")
-			unsaid = false
-		
 		transform = puppet_transform
 		motion = puppet_motion
 		
+	# Move the Player
 	motion = move_and_slide(motion, Vector3.UP, true)
+	
+	# ???
 	if not is_network_master():
 		puppet_transform = transform
 
 
 func _on_cancel_button_pressed():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""when user wants to resume playing game"""
 	pause_menu.hide()
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _on_quit_button_pressed():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""when user wants to stop playing game"""
 	get_tree().set_network_peer(null)
-	network.end_game()
+	network.end_game() # FIXME (this function only exists in CLIENT player)
 
 
 func capture_mouse():
@@ -202,27 +195,36 @@ func release_mouse():
 
 
 func update_list():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$HUD/Players/List.clear() # FIXME (non external variable for fragile link!)
+	"""Updates the list of actively playing users"""
+	players_list.clear()
 	for player in network.players:
-		$HUD/Players/List.add_item(network.players[player]) # FIXME (fragile link; make external)
+		players_list.add_item(network.players[player])
 
 
 func _process(_delta):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	2020-09-13: Just handles input
+	"""
 	handle_input()
 
 
 func handle_input():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	FIXED (keyboard) inputs
+	- scoreboard
+	"""
+	
 	if Input.is_action_just_pressed("tab"):
 		update_list()
-		$HUD/Players.show() # FIXME (fragile link; make external)
+		players_menu.show()
+		
 	if Input.is_action_just_released("tab"):
-		$HUD/Players.hide() # FIXME (fragile link; make external)
+		players_menu.hide()
 
 
 puppet func play_anim(anim):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	Allow SELF or OTHERS to tell my MODEL to animate
+	"""
 	knight.play_anim(anim)
 
