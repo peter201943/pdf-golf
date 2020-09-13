@@ -1,26 +1,38 @@
+# tool # FIXME (add tool mode)
 extends KinematicBody
+
 
 """briefly describe why this is here""" # FIXME (documentation missing)
 
+
+# What the player looks with
 onready var camera = $Pivot/Camera # FIXME (fragile link; make external)
 
-const MOTION_SPEED = 8
+# ???
+const MOTION_SPEED = 8 # DELETEME (unused)
 
+# FIXME (documentation missing)
 puppet var puppet_transform
 puppet var puppet_motion = Vector3()
+
+# FIXME (documentation missing)
 var motion = Vector3()
 
+# FIXME (documentation missing)
 var random_number_generator = RandomNumberGenerator.new()
 
+# FIXME (documentation missing)
 export var speed = 100
 export var acceleration = 5
 export var gravity = 0.98
 export var jump_power = 30
 export var mouse_sensitivity = 0.003
 
+# FIXME (documentation missing)
 var last_motion
 var last_transform
 
+# FIXME (documentation missing)
 onready var knight = $knight # FIXME (fragile link; make external)
 var last_anim = 'idle'
 

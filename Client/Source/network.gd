@@ -1,7 +1,11 @@
+# tool # FIXME (add tool mode)
 extends Node
+
 
 """briefly describe why this is here""" # FIXME (documentation missing)
 
+
+# FIXME (documentation missing)
 var player_name = "player 1"
 
  # FIXME (documentation missing)
@@ -16,9 +20,11 @@ signal game_ended()
  # FIXME (documentation missing)
 signal game_error(what)
 
+# FIXME (documentation missing)
 var player_scene = load("res://Source/Player.tscn") # FIXME (fragile link; make external)
 var map = "base" # map_name
 
+# FIXME (documentation missing)
 var players = {}
 
 

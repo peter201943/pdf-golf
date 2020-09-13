@@ -1,3 +1,4 @@
+# tool # FIXME (add tool mode)
 extends Node
 """briefly describe why this is here""" # FIXME (documentation missing)
 
