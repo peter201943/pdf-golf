@@ -18,19 +18,20 @@ var player_name = 'server' # DELETEME (UNUSED)
 var players = {}
 
 # the name of the map to load
-var map = "psx_demo" # RENAME `map` to `map_name`
+var map_name = "psx_demo" # RENAME `map` to `map_name` # FIXME (non external variable for fragile link!)
 
-# where we spawn the next player at
-var last_transform # RENAME `last_transform` to `next_spawn_transform`
+# where we spawn the next player
+var next_spawn_transform: Transform
 
 
 func _ready():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("SERVER.NETWORK.READY = loading")
+	"""
+	Connects Player Signals and Hosts the Game
+	"""
 	get_tree().connect("network_peer_connected", self, "player_connected")
 	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
 	host_game()
-	print("SERVER.NETWORK.READY = done")
+	# FIXME (tool-mode needs this to be controlled independently of start-up)
 
 
 remote func register_player(other_player_name):
@@ -47,13 +48,13 @@ func player_connected(id):
 
 func load_player(id):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	rpc_id(id, "load_map", map)
+	rpc_id(id, "load_map", map_name)
 	var root = get_tree().get_root()
-	var world = root.get_node(map)
+	var world = root.get_node(map_name)
 	for player in world.get_node("Players").get_children(): # FIXME (fragile link; make external)
 		rpc_id(id, 'add_player', int(player.name), player.transform, players[int(player.name)])
 	add_player(id)
-	rpc('add_player', id, last_transform, players[id])
+	rpc('add_player', id, next_spawn_transform, players[id])
 
 
 func player_disconnected(id):
@@ -66,7 +67,7 @@ func player_disconnected(id):
 func remove_player(id):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	var root = get_tree().get_root()
-	var world = root.get_node(map)
+	var world = root.get_node(map_name)
 	world.get_node("Players/" + str(id)).queue_free()  # FIXME (fragile link; make external)
 	print("player: " + str(id) + " left the game")
 
@@ -108,15 +109,21 @@ func display_info():
 	print("----------")
 	print("Port: " + str(DEFAULT_PORT))
 	print("Max Players: " + str(MAX_PEERS))
-	print("Map: " + map)
+	print("Map: " + map_name)
 
 
-func load_map():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	var map_temp = "res://Source/Maps/" + map + ".tscn"  # FIXME (fragile link; make external variable)
+func load_map(): # FIXME (add `map_name: str = ""` as parameter (and not as global))
+	"""
+	Locates the map inside source files and loads it
+	"""
+	# find the map file-path
+	var map_temp = "res://Source/Maps/" + map_name + ".tscn"  # FIXME (fragile link; make external variable)
+	# instantiate the map
 	var world = load(map_temp).instance()
+	# set the root
 	var root = get_tree().get_root()
-	root.call_deferred('add_child', world)
+	# set the new map as the current map
+	root.call_deferred('add_child', world)	
 	print("\nMap Loaded")
 
 
@@ -129,13 +136,13 @@ func add_player(id):
 	
 	# update map info
 	var root = get_tree().get_root() # FIXME (make permanent variable)
-	var world = root.get_node(map)
+	var world = root.get_node(map_name)
 	
 	# set the spawn point for this player
 	randomize()
 	var spawn_index = randi() % 10
 	var spawn_point = world.get_node("SpawnPoints/" + str(spawn_index)) # FIXME (fragile link; make external)
-	last_transform = spawn_point.transform
+	next_spawn_transform = spawn_point.transform
 	
 	# Make a new character for each connecting player
 	var player = player_scene.instance()
