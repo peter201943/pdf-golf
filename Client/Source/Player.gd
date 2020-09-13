@@ -66,7 +66,7 @@ func _unhandled_input(event):
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
 		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity) # FIXME (fragile link; make external)
-		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.4)
+		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.4) # FIXME (non external variable for fragile link!)
 
 
 func _physics_process(delta): # FIXME REFACTOR (overly long method; too many responsibilities)
@@ -156,7 +156,7 @@ func _on_quit_button_pressed():
 
 func update_list():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$HUD/Players/List.clear()
+	$HUD/Players/List.clear() # FIXME (non external variable for fragile link!)
 	for player in network.players:
 		$HUD/Players/List.add_item(network.players[player]) # FIXME (fragile link; make external)
 

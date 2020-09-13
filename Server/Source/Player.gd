@@ -1,6 +1,9 @@
+# tool # FIXME (add tool mode)
 extends KinematicBody
 
-onready var camera = $Pivot/Camera
+"""briefly describe why this is here""" # FIXME (documentation missing)
+
+onready var camera = $Pivot/Camera # FIXME (non external variable for fragile link!)
 
 const MOTION_SPEED = 8
 
@@ -19,12 +22,13 @@ export var mouse_sensitivity = 0.003
 var last_motion
 var last_transform
 
-onready var knight = $knight
+onready var knight = $knight # FIXME (non external variable for fragile link!)
 
 
 func _ready():
-	$HUD/Panel.hide()
-	$HUD/Players.hide()
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	$HUD/Panel.hide() # FIXME (non external variable for fragile link!)
+	$HUD/Players.hide() # FIXME (non external variable for fragile link!)
 	if is_network_master():
 		camera.current = true
 		set_color()
@@ -33,7 +37,8 @@ func _ready():
 
 
 func set_color():
-	var material = $Model.get_surface_material(0)
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	var material = $Model.get_surface_material(0) # FIXME (non external variable for fragile link!)
 	random_number_generator.randomize()
 	var r = random_number_generator.randf_range(0.0, 1.0)
 	random_number_generator.randomize()
@@ -45,23 +50,25 @@ func set_color():
 
 
 func _unhandled_input(event):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	var mouse_motion = event is InputEventMouseMotion
 	var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
-			$HUD/Panel.hide()
+			$HUD/Panel.hide() # FIXME (non external variable for fragile link!)
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			release_mouse()
-			$HUD/Panel.show()
+			$HUD/Panel.show() # FIXME (non external variable for fragile link!)
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
-		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity)
-		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.8)
+		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity) # FIXME (non external variable for fragile link!)
+		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.8) # FIXME (non external variable for fragile link!)
 
 
 func _physics_process(delta):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	motion.x = 0
 	motion.z = 0
 	
@@ -117,44 +124,53 @@ func _physics_process(delta):
 
 
 func set_player_name(player):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	$Name/Viewport/GUI/Player.text = player
 
 
 func _on_cancel_button_pressed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	$HUD/Panel.hide()
 	release_mouse()
 
 
 func capture_mouse():
+	# DELETEME (unnecessary function)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func release_mouse():
+	# DELETEME (unnecessary function)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _on_quit_button_pressed():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	get_tree().set_network_peer(null)
 	#network.end_game()
 
 
 func update_list():
-	$HUD/Players/List.clear()
+	"""briefly describe why this is here""" # FIXME (documentation missing)
+	$HUD/Players/List.clear() # FIXME (non external variable for fragile link!)
 	#for player in network.players:
 	#	$HUD/Players/List.add_item(network.players[player])
 
 
 func _process(_delta):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	handle_input()
 
 
 func handle_input():
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	if Input.is_action_just_pressed("tab"):
 		update_list()
-		$HUD/Players.show()
+		$HUD/Players.show() # FIXME (non external variable for fragile link!)
 	if Input.is_action_just_released("tab"):
-		$HUD/Players.hide()
+		$HUD/Players.hide() # FIXME (non external variable for fragile link!)
 
 
 puppet func play_anim(anim):
+	"""briefly describe why this is here""" # FIXME (documentation missing)
 	knight.play_anim(anim)
