@@ -72,12 +72,13 @@ func remove_player(id):
 
 func host_game():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	if OS.get_cmdline_args().size() > 0:
-		map = OS.get_cmdline_args()[0]
-		map = map.to_lower()
+	
+	# Instantiate the ENET daemon
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
+	
+	# Load Map twice?
 	load_map()
 	display_info()
 	load_map()
