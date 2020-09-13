@@ -2,12 +2,20 @@
 extends KinematicBody
 
 
-# FIXME (documentation missing)
 """
-SERVER player
+CLIENT player
 
-Is this    the PLAYER-Character (client)
-or is this the SERVER-Character (puppet)
+This script serves as both a PUPPET and a PLAYER
+- A *PUPPET* is a *robot*, it receives instructions over the Internet from a REAL player
+- A *PLAYER* emits instructions over the Internet that *PUPPETS* receive
+
+This script handles
+- networking (remote calls)
+- mouse input (look, fire)
+- keyboard input (menus)
+- physics (falling, motion)
+- menus (pause, main)
+- hud's (nametag)
 """
 
 
@@ -15,32 +23,42 @@ or is this the SERVER-Character (puppet)
 var camera: Camera
 var pivot: Spatial
 
-# How the player moves around
+# How the player indicates how to move around
+var camera_basis: Basis
+var direction: Vector3
+
+# How PUPPETS move around
 puppet var puppet_transform
 puppet var puppet_motion = Vector3()
-var motion = Vector3()
+
+# How PLAYERS move around
+var motion: Vector3
+var anim: String
 
 # Adjust how the player moves around
-export var speed:int = 100
-export var acceleration:int = 5
-export var gravity:float = 0.98
-export var jump_power:int = 30
-export var mouse_sensitivity:float = 0.003
+export var speed:int = 100                  # how quickly a player can move
+export var acceleration:int = 5             # how quickly a player approaches max speed
+export var gravity:float = 0.98             # how fast a player falls
+export var jump_power:int = 30              # how high a player can jump
+export var mouse_sensitivity:float = 0.003  # how quickly to turn the mouse
 
-# FIXME (documentation missing)
-var last_motion: Vector3
-var last_transform: Transform
+# Did something change?
+# (these are needed by the server to know)
+# (when a player moves in a new direction)
+var last_anim: String           # If we change animation
+var last_motion: Vector3        # If we change direction
+var last_transform: Transform   # If we change position
 
-# FIXME (documentation missing)
+# What is displayed and animated
 var knight
-# FIXME (why is `idle` missing?)
 
 # On-Screen Menus
-var players_menu: ColorRect
-var players_list: ItemList
-var pause_menu: ColorRect
-var display_name: Label
+var players_menu: ColorRect # shows the current players
+var players_list: ItemList  # the actual list of players
+var pause_menu: ColorRect   # allows players to exit during game
+var display_name: Label     # floating name-tag above player
 
+# Debugging
 var is_puppet: bool
 
 
@@ -76,6 +94,7 @@ func _ready():
 	# Reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	motion = Vector3()
 	
 	print("SERVER.player._ready() = done")
 
@@ -111,87 +130,120 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
-	# FIXME REFACTOR (overly long method; too many responsibilities)
-	# FIXME (differs from `Client/Source/Player.gd`)
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	Updates variables, moves the player, gets player input,
+	handles that input, applies effects, changes, and updates
+	"""
+	refresh_physics_variables()
+	if not is_puppet:
+		apply_human_direction(delta)
+		apply_effects()
+		apply_updates()
+		apply_history()
+	if is_puppet:
+		apply_puppet_direction()
+	apply_motion()
+
+
+func refresh_physics_variables():
+	"""
+	Every physics cycle, update anything for physics
+	"""
 	
 	# Reset the Forward/Backward and Left/Right motion
 	motion.x = 0
 	motion.z = 0
-	
+
 	# Refresh the camera and direction
-	var camera_basis = camera.global_transform.basis
-	var direction = Vector3()
+	camera_basis = camera.global_transform.basis
+	direction = Vector3()
 	
-	# If this is a HUMAN
-	if is_network_master():
-		
-		# get the Intended Direction
-		if Input.is_action_pressed("move_forward"):
-			direction -= camera_basis.z
-			if direction.y != 0: print("uh oh") # (why is this here?)
-		if Input.is_action_pressed("move_back"):
-			direction += camera_basis.z
-			if direction.y != 0: print("uh oh") # (why is this here?)
-		if Input.is_action_pressed("strafe_left"):
-			direction -= camera_basis.x
-		if Input.is_action_pressed("strafe_right"):
-			direction += camera_basis.x
-		
-		# Reset the `y`. Somehow moving around messes this up.
-		direction.y = 0
-		
-		# Prevent going faster diagonally
-		direction = direction.normalized()
-		
-		# Apply speed and acceleration
-		motion = motion.linear_interpolate(direction * speed, acceleration * delta)
-		
-		# Apply falling
-		motion.y -= gravity
-		
-		# Add the vertical component if the player jumps
-		if Input.is_action_just_pressed("jump") and is_on_floor():
-			motion.y = jump_power
-		
-		# Set the animation state and play
-		var anim = "idle"
-		if motion.x != 0 or motion.z != 0:
-			anim = "walk"
-		play_anim(anim)
-		
-		# Animation ???
-		# Server does not care about animation
-		
-		
-		# Motion ???
-		if last_motion != motion:
-			rpc('play_anim', anim)
-			rset("puppet_motion", motion)
-		
-		# Transform ???
-		if last_transform != transform:
-			rset("puppet_transform", transform)
-		
-		# ???
-		last_motion = motion
-		last_transform = transform
-		
-	# If this is a PUPPET
-	else:
-		# get the server's copy of our transform
-		transform = puppet_transform
-		motion = puppet_motion
-		
+
+func apply_human_direction(delta):
+	"""Let a human set the input"""
+	
+	# get the Intended Direction
+	if Input.is_action_pressed("move_forward"):
+		direction -= camera_basis.z
+	if Input.is_action_pressed("move_back"):
+		direction += camera_basis.z
+	if Input.is_action_pressed("strafe_left"):
+		direction -= camera_basis.x
+	if Input.is_action_pressed("strafe_right"):
+		direction += camera_basis.x
+	
+	# Reset the `y`. Somehow moving around messes this up.
+	direction.y = 0
+	
+	# Prevent going faster diagonally
+	direction = direction.normalized()
+	
+	# Apply speed and acceleration
+	motion = motion.linear_interpolate(direction * speed, acceleration * delta)
+	
+	# Apply falling
+	motion.y -= gravity
+	
+	# Add the vertical component if the player jumps
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		motion.y = jump_power
+
+
+func apply_effects():
+	"""
+	Every physics frame, any animations
+	"""
+	
+	# Set the animation state and play
+	anim = 'idle'
+	if motion.x + motion.z != 0:
+		anim = "walk"
+	play_anim(anim)
+	
+
+func apply_updates():
+	"""
+	Every phyics frame, anything ther server might need to know
+	"""
+	
+	# When we have stopped moving, update the server
+	if last_anim != anim:
+		rpc('play_anim', anim)
+	
+	# Motion ???
+	if last_motion != motion:
+		rpc('play_anim', anim)
+		rset("puppet_motion", motion)
+	
+	# Transform ???
+	if last_transform != transform:
+		rset("puppet_transform", transform)
+
+
+func apply_history():
+	"""Update last ___ for next cycle"""
+	last_anim = anim
+	last_motion = motion
+	last_transform = transform
+
+
+func apply_puppet_direction():
+	"""
+	If we are a puppet, we need the server's
+	instance of our transform and motion
+	"""
+	transform = puppet_transform
+	motion = puppet_motion
+	
+
+func apply_motion():
+	"""
+	Every cycle, move the player and update the puppet
+	"""
 	# Move the Player
 	motion = move_and_slide(motion, Vector3.UP, true)
-	
-	# ???
-	if not is_network_master():
-		print(
-			"self.transform: " + str(transform) + 
-			"\npuppet.transform: " + str(puppet_transform)
-		)
+	# update the puppet after the puppet has moved around
+	if is_puppet:
 		puppet_transform = transform
 
 
@@ -204,13 +256,15 @@ func _on_cancel_button_pressed():
 func _on_quit_button_pressed():
 	"""when user wants to stop playing game"""
 	get_tree().set_network_peer(null)
-	# FIXME (see `CLIENT/Player.gd#_on_quit_button_pressed()`)
+	if not is_puppet:
+		pass # FIXME (see `CLIENT/Player.gd#_on_quit_button_pressed()`)
 
 
 func update_list():
 	"""Updates the list of actively playing users"""
-	players_list.clear()
-	# FIXME (see `CLIENT/Player.gd#update_list()`)
+	if not is_puppet:
+		players_list.clear()
+		# FIXME (see `CLIENT/Player.gd#update_list()`)
 
 
 func _process(_delta):
