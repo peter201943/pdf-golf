@@ -13,10 +13,6 @@ func _ready():
 	network.connect("game_ended",           self, "_on_game_ended")
 	network.connect("game_error",           self, "_on_game_error")
 	
-#	for ip in IP.get_local_addresses():
-#		if str(ip).split(".")[0] == "192":
-#			$IP/Value.text = str(ip)
-	
 	if OS.has_environment("USERNAME"):
 		$Name/Value.text = OS.get_environment("USERNAME") # FIXME (fragile link; make external)
 	else:

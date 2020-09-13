@@ -49,31 +49,11 @@ func _ready():
 	# ???
 	if is_network_master():
 		camera.current = true
-		set_color()
 	
 	# reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	print("SERVER.player._ready() = done")
-
-
-func set_color():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("ATTN: (server) SET COLOR CALLED")
-	# Get the model's surface material
-	var material = $Model.get_surface_material(0) # FIXME (non external variable for fragile link!)
-	
-	random_number_generator.randomize()
-	var r = random_number_generator.randf_range(0.0, 1.0)
-	
-	random_number_generator.randomize()
-	var g = random_number_generator.randf_range(0.0, 1.0)
-	
-	random_number_generator.randomize()
-	var b = random_number_generator.randf_range(0.0, 1.0)
-	
-	var color = Vector3(r, g, b).normalized()
-	material.albedo_color = Color(color.x, color.y, color.z, 1.0)
 
 
 func _unhandled_input(event):
