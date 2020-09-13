@@ -2,7 +2,8 @@
 extends Node
 """briefly describe why this is here""" # FIXME (documentation missing)
 
-# 
+
+# What we instantiate per player
 var player_scene = load("res://Source/Player.tscn") # FIXME (non external variable for fragile link!)
 
 # Which port we serve from
@@ -11,14 +12,17 @@ const DEFAULT_PORT = 5000
 # Total players who can exist
 const MAX_PEERS = 50
 
-# ???
+# ??? # FIXME (documentation missing)
 var player_name = 'server' # DELETEME (UNUSED)
 
-# ???
+# handle players without names
+var no_name_count: int
+
+# ??? # FIXME (documentation missing)
 var players = {}
 
 # the name of the map to load
-var map_name = "psx_demo" # RENAME `map` to `map_name` # FIXME (non external variable for fragile link!)
+export(String, "psx_demo") var map_name = "psx_demo"
 
 # where we spawn the next player
 var next_spawn_transform: Transform
@@ -26,18 +30,28 @@ var next_spawn_transform: Transform
 
 func _ready():
 	"""
-	Connects Player Signals and Hosts the Game
+	Connects Player Signals, resets global variables, Hosts the Game
 	"""
+	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_connected", self, "player_connected")
+	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
-	host_game()
-	# FIXME (tool-mode needs this to be controlled independently of start-up)
+	no_name_count = 0
+	host_game() # FIXME (tool-mode needs this to be controlled independently of start-up)
 
 
 remote func register_player(other_player_name):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	A request from a player to join this server's session
+	"""
+	# get their id
 	var sender = get_tree().get_rpc_sender_id()
+	# add their id and name to our list
+	if other_player_name == "":
+		no_name_count += 1
+		other_player_name = "No-Name-" + str(no_name_count)
 	players[sender] = other_player_name
+	# load them
 	load_player(sender)
 
 

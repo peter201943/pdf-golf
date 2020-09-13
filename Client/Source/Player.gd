@@ -2,20 +2,19 @@
 extends KinematicBody
 
 
-"""briefly describe why this is here""" # FIXME (documentation missing)
+# FIXME (documentation missing)
+"""
+Is this    the PLAYER-Character (client)
+or is this the SERVER-Character (puppet)
+"""
 
 
 # What the player looks with
 onready var camera = $Pivot/Camera # FIXME (fragile link; make external)
 
-# ???
-const MOTION_SPEED = 8 # DELETEME (unused)
-
 # FIXME (documentation missing)
 puppet var puppet_transform
 puppet var puppet_motion = Vector3()
-
-# FIXME (documentation missing)
 var motion = Vector3()
 
 # FIXME (documentation missing)
@@ -38,20 +37,35 @@ var last_anim = 'idle'
 
 
 func _ready():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("CLIENT.NETWORK.READY = loading")
+	"""
+	2020-09-13: Hides the connect-menu and player-menu
+	Capture mouse, reset variables, resync with puppet
+	"""
+	
+	# Hide the Menus
+	print("CLIENT.player._ready() = loading")
 	$HUD/Panel.hide() # FIXME (fragile link; make external)
 	$HUD/Players.hide() # FIXME (fragile link; make external)
+	
+	# ???
 	if is_network_master():
 		camera.current = true
 		set_color()
+	
+	# reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	print("CLIENT.NETWORK.READY = done")
+	print("CLIENT.player._ready() = done")
 
 
 func set_color():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	2020-09-13:
+		seems this is only called by the client
+	""" # FIXME (documentation missing)
+	
+	print("ATTN: (client) SET COLOR CALLED")
+	
 	var material = $Model.get_surface_material(0) # FIXME (fragile link; make external)
 	random_number_generator.randomize()
 	var r = random_number_generator.randf_range(0.0, 1.0)
@@ -59,8 +73,9 @@ func set_color():
 	var g = random_number_generator.randf_range(0.0, 1.0)
 	random_number_generator.randomize()
 	var b = random_number_generator.randf_range(0.0, 1.0)
-	var color = Vector3(r, g, b).normalized()
-	material.albedo_color = Color(color.x, color.y, color.z, 1.0)
+	var new_color = Vector3(r, g, b).normalized()
+	print(new_color)
+	material.albedo_color = Color(new_color.x, new_color.y, new_color.z, 1.0)
 
 
 func _unhandled_input(event):
