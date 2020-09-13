@@ -5,6 +5,7 @@ extends Node
 """
 SERVER network
 """ # FIXME (documentation missing)
+# FIXME (rename this script from `Server/Source/network.gd` to `server.gd`)
 
 
 # What we instantiate per player

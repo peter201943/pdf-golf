@@ -12,8 +12,8 @@ or is this the SERVER-Character (puppet)
 
 
 # What the player looks with
-onready var camera = $Pivot/Camera # FIXME (non external variable for fragile link!)
-var pivot
+var camera: Camera
+var pivot: Spatial
 
 # FIXME (documentation missing)
 puppet var puppet_transform
@@ -35,8 +35,8 @@ var last_motion
 var last_transform
 
 # FIXME (documentation missing)
-onready var knight = $knight # FIXME (fragile link; make external)
-var last_anim = 'idle'
+var knight
+var last_anim = 'idle' # FIXME (what is this and why is it only in client?)
 
 # On-Screen Menus
 var players_menu: ColorRect
@@ -44,22 +44,33 @@ var players_list: ItemList
 var pause_menu: ColorRect
 var player_name: Label
 
+
 func _ready():
 	"""
 	2020-09-13: Hides the connect-menu and player-menu
 	Capture mouse, reset variables, resync with puppet
 	"""
 	
-	# Hide the Menus
 	print("CLIENT.player._ready() = loading")
-	$HUD/Panel.hide() # FIXME (fragile link; make external)
-	$HUD/Players.hide() # FIXME (fragile link; make external)
+	
+	# Bind the References
+	players_menu = $HUD/Players # FIXME (fragile link; make external)
+	players_list = $HUD/Players/List # FIXME (fragile link; make external)
+	pause_menu = $HUD/Panel # FIXME (fragile link; make external)
+	camera = $Pivot/Camera # FIXME (fragile link; make external)
+	pivot = $Pivot # FIXME (fragile link; make external)
+	player_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
+	knight = $knight # FIXME (fragile link; make external)
+	
+	# Hide all the Menus
+	pause_menu.hide() # FIXME (non external variable for fragile link!)
+	players_menu.hide() # FIXME (non external variable for fragile link!)
 	
 	# ???
 	if is_network_master():
 		camera.current = true
 	
-	# reset global variables
+	# Reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	print("CLIENT.player._ready() = done")
@@ -73,7 +84,7 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
-			$HUD/Panel.hide() # FIXME (fragile link; make external)
+			pause_menu.hide()
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if mouse_captured:
 			print("BANG!")
@@ -81,23 +92,27 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			release_mouse()
-			$HUD/Panel.show() # FIXME (fragile link; make external)
+			pause_menu.show()
 	
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
-		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity) # FIXME (fragile link; make external)
-		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.4) # FIXME (non external variable for fragile link!)
+		pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+		pivot.rotation.x = clamp(pivot.rotation.x, -0.8, 0.4)
 
 
-func _physics_process(delta): # FIXME REFACTOR (overly long method; too many responsibilities)
+func _physics_process(delta):
+	# FIXME REFACTOR (overly long method; too many responsibilities)
+	# FIXME (differs from `Server/Source/Player.gd`)
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	
 	motion.x = 0
 	motion.z = 0
-	
+
 	var camera_basis = camera.global_transform.basis
 	var direction = Vector3()
 	
 	if is_network_master():
+		
 		if Input.is_action_pressed("move_forward"):
 			direction -= camera_basis.z
 			if direction.y != 0:
@@ -120,16 +135,13 @@ func _physics_process(delta): # FIXME REFACTOR (overly long method; too many res
 			motion.y = jump_power
 		
 		var anim = 'idle'
-		
 		if motion.x != 0 or motion.z != 0:
 			anim = "walk"
-		else:
-			anim = "idle"
 		
 		play_anim(anim)
-		if last_anim != anim:
+		if last_anim != anim:  # FIXME (what is this and why is it only in client?)
 			rpc('play_anim', anim)
-		last_anim = anim
+		last_anim = anim  # FIXME (what is this and why is it only in client?)
 		if last_motion != motion:
 			rset("puppet_motion", motion)
 		if last_transform != transform:
@@ -149,13 +161,13 @@ func _physics_process(delta): # FIXME REFACTOR (overly long method; too many res
 
 func set_player_name(player):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$Name/Viewport/GUI/Player.text = player # FIXME (fragile link; make external)
+	player_name.text = player
 
 
 func _on_cancel_button_pressed():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$HUD/Panel.hide() # FIXME (fragile link; make external)
-	release_mouse()
+	pause_menu.hide()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func capture_mouse():
@@ -198,3 +210,4 @@ func handle_input():
 puppet func play_anim(anim):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	knight.play_anim(anim)
+

@@ -12,8 +12,8 @@ or is this the SERVER-Character (puppet)
 
 
 # What the player looks with
-onready var camera = $Pivot/Camera # FIXME (non external variable for fragile link!)
-var pivot
+var camera: Camera
+var pivot: Spatial
 
 # FIXME (documentation missing)
 puppet var puppet_transform
@@ -31,11 +31,11 @@ export var jump_power:int = 30
 export var mouse_sensitivity:float = 0.003
 
 # FIXME (documentation missing)
-var last_motion
+var last_motion: Vector3
 var last_transform
 
 # FIXME (documentation missing)
-onready var knight = $knight # FIXME (non external variable for fragile link!)
+var knight
 
 # On-Screen Menus
 var players_menu: ColorRect
@@ -50,15 +50,18 @@ func _ready():
 	Capture mouse, reset variables, resync with puppet
 	"""
 	
-	# Hide the Menus
 	print("SERVER.player._ready() = loading")
 	
-	players_menu = $HUD/Players
-	players_list = $HUD/Players/List
-	pause_menu = $HUD/Panel
-	pivot = $Pivot
-	player_name = $Name/Viewport/GUI/Player
+	# Bind the References
+	players_menu = $HUD/Players # FIXME (fragile link; make external)
+	players_list = $HUD/Players/List # FIXME (fragile link; make external)
+	pause_menu = $HUD/Panel # FIXME (fragile link; make external)
+	camera = $Pivot/Camera # FIXME (fragile link; make external)
+	pivot = $Pivot # FIXME (fragile link; make external)
+	player_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
+	knight = $knight # FIXME (fragile link; make external)
 	
+	# Hide all the Menus
 	pause_menu.hide() # FIXME (non external variable for fragile link!)
 	players_menu.hide() # FIXME (non external variable for fragile link!)
 	
@@ -66,7 +69,7 @@ func _ready():
 	if is_network_master():
 		camera.current = true
 	
-	# reset global variables
+	# Reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	print("SERVER.player._ready() = done")
@@ -80,7 +83,7 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
-			pause_menu.hide() # FIXME (non external variable for fragile link!)
+			pause_menu.hide()
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if mouse_captured:
 			print("BANG!")
@@ -88,7 +91,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			pause_menu.show() # FIXME (non external variable for fragile link!)
+			pause_menu.show()
 	
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
@@ -97,6 +100,8 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
+	# FIXME REFACTOR (overly long method; too many responsibilities)
+	# FIXME (differs from `Client/Source/Player.gd`)
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	motion.x = 0
 	motion.z = 0
@@ -167,7 +172,7 @@ func _on_cancel_button_pressed():
 func _on_quit_button_pressed():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	get_tree().set_network_peer(null)
-	#network.end_game()
+	#network.end_game() # FIXME (this function only exists in CLIENT player)
 
 
 func update_list():

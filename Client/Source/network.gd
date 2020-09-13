@@ -5,6 +5,7 @@ extends Node
 """
 CLIENT network
 """ # FIXME (documentation missing)
+# FIXME (rename this script from `Client/Source/network.gd` to `client.gd`)
 
 
 # FIXME (documentation missing)
@@ -66,9 +67,16 @@ func _server_disconnected():
 
 func end_game():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	# FIXME (this function only exists in CLIENT player)
+	
+	# Reset the map
 	if has_node("/root/" + map):
 		get_node("/root/" + map).queue_free()
+		
+	# Alert any game objects to stop
 	emit_signal("game_ended")
+	
+	# Reset `players` list
 	players = {}
 
 
