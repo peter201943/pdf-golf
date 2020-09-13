@@ -15,15 +15,12 @@ or is this the SERVER-Character (puppet)
 var camera: Camera
 var pivot: Spatial
 
-# FIXME (documentation missing)
+# How the player moves around
 puppet var puppet_transform
 puppet var puppet_motion = Vector3()
 var motion = Vector3()
 
-# FIXME (documentation missing)
-var random_number_generator = RandomNumberGenerator.new()
-
-# FIXME (documentation missing)
+# Adjust how the player moves around
 export var speed:int = 100
 export var acceleration:int = 5
 export var gravity:float = 0.98
@@ -32,10 +29,11 @@ export var mouse_sensitivity:float = 0.003
 
 # FIXME (documentation missing)
 var last_motion: Vector3
-var last_transform
+var last_transform: Transform
 
 # FIXME (documentation missing)
 var knight
+# FIXME (why is `idle` missing?)
 
 # On-Screen Menus
 var players_menu: ColorRect
@@ -43,10 +41,12 @@ var players_list: ItemList
 var pause_menu: ColorRect
 var display_name: Label
 
+# Debugging
+var unsaid = true # tell if we are a puppet or not
+
 
 func _ready():
 	"""
-	2020-09-13: Hides the connect-menu and player-menu
 	Capture mouse, reset variables, resync with puppet
 	"""
 	
@@ -72,15 +72,20 @@ func _ready():
 	# Reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
 	print("SERVER.player._ready() = done")
 
 
 func _unhandled_input(event):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	Mouselook, Mousepress, and Escape User Input
+	"""
 	
+	# Let
 	var mouse_motion = event is InputEventMouseMotion
 	var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 	
+	# Mouse Left
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
 			pause_menu.hide()
@@ -88,15 +93,17 @@ func _unhandled_input(event):
 		if mouse_captured:
 			print("BANG!")
 	
+	# Escape
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			pause_menu.show()
 	
+	# Mouselook
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
 		pivot.rotate_x(-event.relative.y * mouse_sensitivity)
-		pivot.rotation.x = clamp(pivot.rotation.x, -0.8, 0.8)
+		pivot.rotation.x = clamp(pivot.rotation.x, -0.8, 0.4)
 
 
 func _physics_process(delta):
@@ -104,26 +111,34 @@ func _physics_process(delta):
 	# FIXME (differs from `Client/Source/Player.gd`)
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	
+	# Reset the Forward/Backward and Left/Right motion
 	motion.x = 0
 	motion.z = 0
 	
+	# Refresh the camera and direction
 	var camera_basis = camera.global_transform.basis
 	var direction = Vector3()
 	
+	# If this is not an instance of a PUPPET
 	if is_network_master():
 		
+		# DELETEME (Debug only, temp)
+		if unsaid:
+			print("I AM NOT A PUPPET!")
+			unsaid = false
+		
+		direction.y = 0
 		if Input.is_action_pressed("move_forward"):
 			direction -= camera_basis.z
-			if direction.y != 0:
-				direction.y = 0
+			if direction.y != 0: print("uh oh") # (why is this here?)
 		if Input.is_action_pressed("move_back"):
 			direction += camera_basis.z
-			if direction.y != 0:
-				direction.y = 0
+			if direction.y != 0: print("uh oh") # (why is this here?)
 		if Input.is_action_pressed("strafe_left"):
 			direction -= camera_basis.x
 		if Input.is_action_pressed("strafe_right"):
 			direction += camera_basis.x
+		direction.y = 0
 		
 		direction = direction.normalized()
 		
@@ -148,6 +163,12 @@ func _physics_process(delta):
 		last_transform = transform
 		
 	else:
+
+		# DELETEME (Debug only, temp)
+		if unsaid:
+			print("...I am a puppet...")
+			unsaid = false
+
 		transform = puppet_transform
 		motion = puppet_motion
 		

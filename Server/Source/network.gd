@@ -187,5 +187,5 @@ func add_player(id):
 	player.transform = spawn_point.transform
 	player.set_network_master(id)
 	world.get_node("Players").add_child(player)  # FIXME (fragile link; make external)
-	print("CLIENT adding player... done") # DELETEME (temp debug)
+	print("SERVER adding player... done") # DELETEME (temp debug)
 	
