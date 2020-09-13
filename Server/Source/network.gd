@@ -1,16 +1,26 @@
 extends Node
 """briefly describe why this is here""" # FIXME (documentation missing)
 
+# 
 var player_scene = load("res://Source/Player.tscn") # FIXME (non external variable for fragile link!)
 
+# Which port we serve from
 const DEFAULT_PORT = 5000
+
+# Total players who can exist
 const MAX_PEERS = 50
 
+# ???
+var player_name = 'server' # DELETEME (UNUSED)
 
-var player_name = 'server'
+# ???
 var players = {}
-var map = "psx_demo" # TODO RENAME `map` to `map_name`
-var last_transform
+
+# the name of the map to load
+var map = "psx_demo" # RENAME `map` to `map_name`
+
+# where we spawn the next player at
+var last_transform # RENAME `last_transform` to `next_spawn_transform`
 
 
 func _ready():
@@ -74,15 +84,28 @@ func host_game():
 
 
 func display_info():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("Server running...\n")
+	"""
+	Display basic info about the server, what IP Addresses are available
+	"""
+	print("Server Debug Info\n----------")
 	for ip in IP.get_local_addresses():
 		if str(ip).split(".")[0] == "192":
-			print("Server ip: " + ip)
-		print("Server ip: " + ip) # DELETEME FIXME (what is this?)
-	print(" ") #DELETEME FIXME (what is this?)
-	print("Server port: " + str(DEFAULT_PORT))
-	print("Server max players: " + str(MAX_PEERS))
+			print("IPv6 Local:    " + ip)
+		elif str(ip).split(".")[0] == "127":
+			print("IPv4 Loopback: " + ip)
+		elif str(ip).split(":")[0] == "fe80":
+			print("IPv6 Local:    " + ip)
+		elif str(ip) == "::1":
+			print("IPv6 Loopback: " + ip)
+		elif str(ip).split(".").size() > 1 :
+			print("IPv4 Other:    " + ip)
+		elif str(ip).split(":").size() > 1 :
+			print("IPv6 Other:    " + ip)
+		else:
+			print("IPv? Other:    " + ip)
+	print("----------")
+	print("Port: " + str(DEFAULT_PORT))
+	print("Max Players: " + str(MAX_PEERS))
 	print("Map: " + map)
 
 
@@ -96,19 +119,26 @@ func load_map():
 
 
 func add_player(id):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	Adds a new player to the current game
+	- instantiates a model
+	- spawns the model randomly
+	"""
+	
+	# update map info
 	var root = get_tree().get_root() # FIXME (make permanent variable)
 	var world = root.get_node(map)
 	
+	# set the spawn point for this player
 	randomize()
 	var spawn_index = randi() % 10
 	var spawn_point = world.get_node("SpawnPoints/" + str(spawn_index)) # FIXME (fragile link; make external)
+	last_transform = spawn_point.transform
 	
+	# Make a new character for each connecting player
 	var player = player_scene.instance()
-	
 	player.set_name(str(id))
 	player.transform = spawn_point.transform
 	player.set_network_master(id)
-	
 	world.get_node("Players").add_child(player)  # FIXME (fragile link; make external)
-	last_transform = spawn_point.transform
+	
