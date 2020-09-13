@@ -7,7 +7,8 @@ extends Control
 
 func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("CLIENT.MAIN.READY = loading")
+	
+	print("CLIENT.Main.Main._ready = loading")
 	network.connect("connection_failed",    self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_success")
 	network.connect("game_ended",           self, "_on_game_ended")
@@ -18,7 +19,8 @@ func _ready():
 	else:
 		var desktop_path = OS.get_system_dir(0).replace("\\", "/").split("/")
 		$Name/Value.text = desktop_path[desktop_path.size()-2] # FIXME (fragile link; make external)
-	print("CLIENT.MAIN.READY = done")
+	
+	print("CLIENT.Main.Main._ready() = done")
 
 
 func _on_quit_button_pressed():

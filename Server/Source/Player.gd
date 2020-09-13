@@ -4,6 +4,8 @@ extends KinematicBody
 
 # FIXME (documentation missing)
 """
+SERVER player
+
 Is this    the PLAYER-Character (client)
 or is this the SERVER-Character (puppet)
 """
@@ -11,6 +13,7 @@ or is this the SERVER-Character (puppet)
 
 # What the player looks with
 onready var camera = $Pivot/Camera # FIXME (non external variable for fragile link!)
+var pivot
 
 # FIXME (documentation missing)
 puppet var puppet_transform
@@ -21,11 +24,11 @@ var motion = Vector3()
 var random_number_generator = RandomNumberGenerator.new()
 
 # FIXME (documentation missing)
-export var speed = 100
-export var acceleration = 5
-export var gravity = 0.98
-export var jump_power = 30
-export var mouse_sensitivity = 0.003
+export var speed:int = 100
+export var acceleration:int = 5
+export var gravity:float = 0.98
+export var jump_power:int = 30
+export var mouse_sensitivity:float = 0.003
 
 # FIXME (documentation missing)
 var last_motion
@@ -33,6 +36,12 @@ var last_transform
 
 # FIXME (documentation missing)
 onready var knight = $knight # FIXME (non external variable for fragile link!)
+
+# On-Screen Menus
+var players_menu: ColorRect
+var players_list: ItemList
+var pause_menu: ColorRect
+var player_name: Label
 
 
 func _ready():
@@ -43,8 +52,15 @@ func _ready():
 	
 	# Hide the Menus
 	print("SERVER.player._ready() = loading")
-	$HUD/Panel.hide() # FIXME (non external variable for fragile link!)
-	$HUD/Players.hide() # FIXME (non external variable for fragile link!)
+	
+	players_menu = $HUD/Players
+	players_list = $HUD/Players/List
+	pause_menu = $HUD/Panel
+	pivot = $Pivot
+	player_name = $Name/Viewport/GUI/Player
+	
+	pause_menu.hide() # FIXME (non external variable for fragile link!)
+	players_menu.hide() # FIXME (non external variable for fragile link!)
 	
 	# ???
 	if is_network_master():
@@ -58,20 +74,26 @@ func _ready():
 
 func _unhandled_input(event):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	
 	var mouse_motion = event is InputEventMouseMotion
 	var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
-			$HUD/Panel.hide() # FIXME (non external variable for fragile link!)
+			pause_menu.hide() # FIXME (non external variable for fragile link!)
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if mouse_captured:
+			print("BANG!")
+	
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
-			release_mouse()
-			$HUD/Panel.show() # FIXME (non external variable for fragile link!)
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			pause_menu.show() # FIXME (non external variable for fragile link!)
+	
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
-		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity) # FIXME (non external variable for fragile link!)
-		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.8) # FIXME (non external variable for fragile link!)
+		pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+		pivot.rotation.x = clamp(pivot.rotation.x, -0.8, 0.8)
 
 
 func _physics_process(delta):
@@ -83,6 +105,7 @@ func _physics_process(delta):
 	var direction = Vector3()
 	
 	if is_network_master():
+		
 		if Input.is_action_pressed("move_forward"):
 			direction -= camera_basis.z
 			if direction.y != 0:
@@ -132,22 +155,12 @@ func _physics_process(delta):
 
 func set_player_name(player):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$Name/Viewport/GUI/Player.text = player
+	player_name.text = player
 
 
 func _on_cancel_button_pressed():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$HUD/Panel.hide()
-	release_mouse()
-
-
-func capture_mouse():
-	# DELETEME (unnecessary function)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
-func release_mouse():
-	# DELETEME (unnecessary function)
+	pause_menu.hide()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
@@ -159,7 +172,7 @@ func _on_quit_button_pressed():
 
 func update_list():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	$HUD/Players/List.clear() # FIXME (non external variable for fragile link!)
+	players_list.clear() # FIXME (non external variable for fragile link!)
 	#for player in network.players:
 	#	$HUD/Players/List.add_item(network.players[player])
 
@@ -171,11 +184,13 @@ func _process(_delta):
 
 func handle_input():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	
 	if Input.is_action_just_pressed("tab"):
 		update_list()
-		$HUD/Players.show() # FIXME (non external variable for fragile link!)
+		players_menu.show() # FIXME (non external variable for fragile link!)
+	
 	if Input.is_action_just_released("tab"):
-		$HUD/Players.hide() # FIXME (non external variable for fragile link!)
+		players_menu.hide() # FIXME (non external variable for fragile link!)
 
 
 puppet func play_anim(anim):

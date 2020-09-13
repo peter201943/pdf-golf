@@ -4,13 +4,16 @@ extends KinematicBody
 
 # FIXME (documentation missing)
 """
+CLIENT player
+
 Is this    the PLAYER-Character (client)
 or is this the SERVER-Character (puppet)
 """
 
 
 # What the player looks with
-onready var camera = $Pivot/Camera # FIXME (fragile link; make external)
+onready var camera = $Pivot/Camera # FIXME (non external variable for fragile link!)
+var pivot
 
 # FIXME (documentation missing)
 puppet var puppet_transform
@@ -21,11 +24,11 @@ var motion = Vector3()
 var random_number_generator = RandomNumberGenerator.new()
 
 # FIXME (documentation missing)
-export var speed = 100
-export var acceleration = 5
-export var gravity = 0.98
-export var jump_power = 30
-export var mouse_sensitivity = 0.003
+export var speed:int = 100
+export var acceleration:int = 5
+export var gravity:float = 0.98
+export var jump_power:int = 30
+export var mouse_sensitivity:float = 0.003
 
 # FIXME (documentation missing)
 var last_motion
@@ -35,6 +38,11 @@ var last_transform
 onready var knight = $knight # FIXME (fragile link; make external)
 var last_anim = 'idle'
 
+# On-Screen Menus
+var players_menu: ColorRect
+var players_list: ItemList
+var pause_menu: ColorRect
+var player_name: Label
 
 func _ready():
 	"""
@@ -59,16 +67,22 @@ func _ready():
 
 func _unhandled_input(event):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	
 	var mouse_motion = event is InputEventMouseMotion
 	var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
 			$HUD/Panel.hide() # FIXME (fragile link; make external)
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if mouse_captured:
+			print("BANG!")
+	
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			release_mouse()
 			$HUD/Panel.show() # FIXME (fragile link; make external)
+	
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
 		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity) # FIXME (fragile link; make external)

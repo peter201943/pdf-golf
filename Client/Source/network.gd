@@ -2,7 +2,9 @@
 extends Node
 
 
-"""briefly describe why this is here""" # FIXME (documentation missing)
+"""
+CLIENT network
+""" # FIXME (documentation missing)
 
 
 # FIXME (documentation missing)
@@ -29,11 +31,18 @@ var players = {}
 
 
 func _ready():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	attach network signals to local methods
+	"""
+	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_connected",    self, "player_connected")
+	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
+	# warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server",       self, "_connected_ok")
+	# warning-ignore:return_value_discarded
 	get_tree().connect("connection_failed",         self, "_connection_failed")
+	# warning-ignore:return_value_discarded
 	get_tree().connect("server_disconnected",       self, "_server_disconnected")
 
 
