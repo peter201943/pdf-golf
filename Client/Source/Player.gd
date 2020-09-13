@@ -119,10 +119,10 @@ func _physics_process(delta):
 	var camera_basis = camera.global_transform.basis
 	var direction = Vector3()
 	
-	# If this is not an instance of a PUPPET
+	# If this is a HUMAN
 	if is_network_master():
 		
-		direction.y = 0
+		# get the Intended Direction
 		if Input.is_action_pressed("move_forward"):
 			direction -= camera_basis.z
 			if direction.y != 0: print("uh oh") # (why is this here?)
@@ -133,34 +133,49 @@ func _physics_process(delta):
 			direction -= camera_basis.x
 		if Input.is_action_pressed("strafe_right"):
 			direction += camera_basis.x
+		
+		# Reset the `y`. Somehow moving around messes this up.
 		direction.y = 0
 		
+		# Prevent going faster diagonally
 		direction = direction.normalized()
 		
+		# Apply speed and acceleration
 		motion = motion.linear_interpolate(direction * speed, acceleration * delta)
+		
+		# Apply falling
 		motion.y -= gravity
 		
+		# Add the vertical component if the player jumps
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			motion.y = jump_power
 		
+		# Set the animation state and play
 		var anim = 'idle'
 		if motion.x != 0 or motion.z != 0:
 			anim = "walk"
-		
 		play_anim(anim)
+		
+		# Animation ???
 		if last_anim != anim:  # FIXME (what is this and why is it only in client?)
 			rpc('play_anim', anim)
 		last_anim = anim  # FIXME (what is this and why is it only in client?)
+		
+		# Motion ???
 		if last_motion != motion:
 			rset("puppet_motion", motion)
+		
+		# Transform ???
 		if last_transform != transform:
 			rset("puppet_transform", transform)
 		
+		# ???
 		last_motion = motion
 		last_transform = transform
 		
+	# If this is a PUPPET
 	else:
-		
+		# get the server's copy of our transform
 		transform = puppet_transform
 		motion = puppet_motion
 		
@@ -169,6 +184,10 @@ func _physics_process(delta):
 	
 	# ???
 	if not is_network_master():
+		print(
+			"self.transform: " + str(transform) + 
+			"\npuppet.transform: " + str(puppet_transform)
+		)
 		puppet_transform = transform
 
 
@@ -184,19 +203,10 @@ func _on_quit_button_pressed():
 	network.end_game() # FIXME (this function only exists in CLIENT player)
 
 
-func capture_mouse():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
-func release_mouse():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-
 func update_list():
 	"""Updates the list of actively playing users"""
 	players_list.clear()
+	# FIXME (why is this not in SERVER?)
 	for player in network.players:
 		players_list.add_item(network.players[player])
 
