@@ -3,10 +3,11 @@ extends Control
 
 func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	network.connect("connection_failed", self, "_on_connection_failed")
+	print("CLIENT.MAIN.READY = loading")
+	network.connect("connection_failed",    self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_success")
-	network.connect("game_ended", self, "_on_game_ended")
-	network.connect("game_error", self, "_on_game_error")
+	network.connect("game_ended",           self, "_on_game_ended")
+	network.connect("game_error",           self, "_on_game_error")
 	
 #	for ip in IP.get_local_addresses():
 #		if str(ip).split(".")[0] == "192":
@@ -17,6 +18,7 @@ func _ready():
 	else:
 		var desktop_path = OS.get_system_dir(0).replace("\\", "/").split("/")
 		$Name/Value.text = desktop_path[desktop_path.size()-2]
+	print("CLIENT.MAIN.READY = done")
 
 
 func _on_quit_button_pressed():

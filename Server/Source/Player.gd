@@ -111,7 +111,7 @@ func _physics_process(delta):
 		transform = puppet_transform
 		motion = puppet_motion
 		
-	move_and_slide(motion, Vector3.UP, true)
+	motion = move_and_slide(motion, Vector3.UP, true)
 	if not is_network_master():
 		puppet_transform = transform
 
@@ -144,7 +144,7 @@ func update_list():
 	#	$HUD/Players/List.add_item(network.players[player])
 
 
-func _process(delta):
+func _process(_delta):
 	handle_input()
 
 

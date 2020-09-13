@@ -4,9 +4,16 @@ extends Node
 
 var player_name = "player 1"
 
+ # FIXME (documentation missing)
 signal connection_failed()
+
+ # FIXME (documentation missing)
 signal connection_succeeded()
+
+ # FIXME (documentation missing)
 signal game_ended()
+
+ # FIXME (documentation missing)
 signal game_error(what)
 
 var player_scene = load("res://Source/Player.tscn") # FIXME (fragile link; make external)
@@ -68,7 +75,7 @@ remote func load_map(map_name):
 	print("\nMap: " + map)
 
 
-remote func add_player(id, last_transform, player_name): # FIXME REFACTOR (long method; low cohesion)
+remote func add_player(id, last_transform, other_player_name): # FIXME REFACTOR (long method; low cohesion)
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	yield(get_tree().create_timer(1.0), "timeout")
 	var root = get_tree().get_root()
@@ -79,9 +86,9 @@ remote func add_player(id, last_transform, player_name): # FIXME REFACTOR (long 
 	player.set_name(str(id))
 	player.transform = last_transform
 	player.set_network_master(id)
-	player.set_player_name(player_name)
+	player.set_player_name(other_player_name)
 	
-	players[id] = player_name
+	players[id] = other_player_name
 	
 	world.get_node("Players").add_child(player)
 	
@@ -91,7 +98,7 @@ remote func add_player(id, last_transform, player_name): # FIXME REFACTOR (long 
 
 func player_connected(id):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("THIS player (" + player_name + ") just joined THEIR server as player #" + str(id))
+	print("THIS CLIENT (" + player_name + ") just joined THEIR SERVER as player #" + str(id))
 
 
 func player_disconnected(id):

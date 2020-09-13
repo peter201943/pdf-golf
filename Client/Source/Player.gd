@@ -27,6 +27,7 @@ var last_anim = 'idle'
 
 func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	print("CLIENT.NETWORK.READY = loading")
 	$HUD/Panel.hide() # FIXME (fragile link; make external)
 	$HUD/Players.hide() # FIXME (fragile link; make external)
 	if is_network_master():
@@ -34,6 +35,7 @@ func _ready():
 		set_color()
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	print("CLIENT.NETWORK.READY = done")
 
 
 func set_color():
@@ -120,7 +122,7 @@ func _physics_process(delta): # FIXME REFACTOR (overly long method; too many res
 		transform = puppet_transform
 		motion = puppet_motion
 		
-	move_and_slide(motion, Vector3.UP, true)
+	motion = move_and_slide(motion, Vector3.UP, true)
 	if not is_network_master():
 		puppet_transform = transform
 
@@ -159,7 +161,7 @@ func update_list():
 		$HUD/Players/List.add_item(network.players[player]) # FIXME (fragile link; make external)
 
 
-func _process(delta):
+func _process(_delta):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	handle_input()
 

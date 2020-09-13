@@ -15,21 +15,23 @@ var last_transform
 
 func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
+	print("SERVER.NETWORK.READY = loading")
 	get_tree().connect("network_peer_connected", self, "player_connected")
 	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
 	host_game()
+	print("SERVER.NETWORK.READY = done")
 
 
-remote func register_player(player_name):
+remote func register_player(other_player_name):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	var sender = get_tree().get_rpc_sender_id()
-	players[sender] = player_name
+	players[sender] = other_player_name
 	load_player(sender)
 
 
 func player_connected(id):
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	print("Player: " + str(id) + " connected") # FIXME (no perspective (who is saying this?) (QUALIFY))
+	print("THIS SERVER connected THEIR PLAYER (" + str(id) + ")") # FIXME (no perspective (who is saying this?) (QUALIFY))
 
 
 func load_player(id):
