@@ -7,7 +7,6 @@ extends Control
 
 func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
-	
 	print("CLIENT.Main.Main._ready = loading")
 	# warning-ignore:return_value_discarded
 	network.connect("connection_failed",    self, "_on_connection_failed")
