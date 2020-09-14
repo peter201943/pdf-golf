@@ -42,7 +42,7 @@ export var gravity:float = 0.98             # how fast a player falls
 export var jump_power:int = 30              # how high a player can jump
 export var mouse_sensitivity:float = 0.003  # how quickly to turn the mouse
 
-# Did something change?
+# Record Change Across Frames
 # (these are needed by the server to know)
 # (when a player moves in a new direction)
 var last_anim: String           # If we change animation
