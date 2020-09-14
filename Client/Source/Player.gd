@@ -79,8 +79,8 @@ func _ready():
 	knight = $knight # FIXME (fragile link; make external)
 	
 	# Hide all the Menus
-	pause_menu.hide() # FIXME (non external variable for fragile link!)
-	players_menu.hide() # FIXME (non external variable for fragile link!)
+	pause_menu.hide()
+	players_menu.hide()
 	
 	# Network Setup
 	if is_network_master():
@@ -264,7 +264,7 @@ func update_list():
 	"""Updates the list of actively playing users"""
 	if not is_puppet:
 		players_list.clear()
-		for player in network.players:
+		for player in network.players: # FIXME (this function only exists in CLIENT player)
 			players_list.add_item(network.players[player])
 
 

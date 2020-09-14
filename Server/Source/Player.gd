@@ -79,8 +79,8 @@ func _ready():
 	knight = $knight # FIXME (fragile link; make external)
 	
 	# Hide all the Menus
-	pause_menu.hide() # FIXME (non external variable for fragile link!)
-	players_menu.hide() # FIXME (non external variable for fragile link!)
+	pause_menu.hide()
+	players_menu.hide()
 	
 	# Network Setup
 	if is_network_master():
@@ -256,15 +256,16 @@ func _on_cancel_button_pressed():
 func _on_quit_button_pressed():
 	"""when user wants to stop playing game"""
 	get_tree().set_network_peer(null)
-	if not is_puppet:
-		pass # FIXME (see `CLIENT/Player.gd#_on_quit_button_pressed()`)
+	# if not is_puppet:
+		# network.end_game() # FIXME (this function only exists in CLIENT player)
 
 
 func update_list():
 	"""Updates the list of actively playing users"""
 	if not is_puppet:
 		players_list.clear()
-		# FIXME (see `CLIENT/Player.gd#update_list()`)
+		# for player in network.players: # FIXME (this function only exists in CLIENT player)
+			# players_list.add_item(network.players[player])
 
 
 func _process(_delta):
