@@ -254,6 +254,7 @@ func apply_motion():
 func _on_cancel_button_pressed():
 	"""when user wants to resume playing game"""
 	pause_menu.hide()
+	paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
