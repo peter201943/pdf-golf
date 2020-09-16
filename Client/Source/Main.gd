@@ -8,6 +8,8 @@ extends Control
 func _ready():
 	"""briefly describe why this is here""" # FIXME (documentation missing)
 	print("CLIENT.Main.Main._ready = loading")
+	
+	# Connect the Signals
 	# warning-ignore:return_value_discarded
 	network.connect("connection_failed",    self, "_on_connection_failed")
 	# warning-ignore:return_value_discarded
@@ -17,6 +19,7 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	network.connect("game_error",           self, "_on_game_error")
 	
+	# Set a name
 	if OS.has_environment("USERNAME"):
 		$Name/Value.text = OS.get_environment("USERNAME") # FIXME (fragile link; make external)
 	else:

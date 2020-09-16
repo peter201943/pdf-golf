@@ -25,7 +25,9 @@ signal game_error(what)
 
 # FIXME (documentation missing)
 var player_scene = load("res://Source/Player.tscn") # FIXME (fragile link; make external)
-var map = "base" # map_name
+
+# FIXME (documentation missing)
+var map = "base" # map_name # FIXME (rename to `map_name`)
 
 # FIXME (documentation missing)
 var players = {}
