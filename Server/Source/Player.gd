@@ -3,7 +3,7 @@ extends KinematicBody
 
 
 """
-CLIENT player
+SERVER player
 
 This script serves as both a PUPPET and a PLAYER
 - A *PUPPET* is a *robot*, it receives instructions over the Internet from a REAL player
@@ -57,6 +57,7 @@ var players_menu: ColorRect # shows the current players
 var players_list: ItemList  # the actual list of players
 var pause_menu: ColorRect   # allows players to exit during game
 var display_name: Label     # floating name-tag above player
+var paused: bool            # if the pause menu is being shown
 
 # Debugging
 var is_puppet: bool
@@ -70,13 +71,13 @@ func _ready():
 	print("SERVER.player._ready() = loading")
 	
 	# Bind the References
-	players_menu = $HUD/Players # FIXME (fragile link; make external)
-	players_list = $HUD/Players/List # FIXME (fragile link; make external)
-	pause_menu = $HUD/Panel # FIXME (fragile link; make external)
-	camera = $Pivot/Camera # FIXME (fragile link; make external)
-	pivot = $Pivot # FIXME (fragile link; make external)
+	players_menu = $HUD/Players              # FIXME (fragile link; make external)
+	players_list = $HUD/Players/List         # FIXME (fragile link; make external)
+	pause_menu = $HUD/Panel                  # FIXME (fragile link; make external)
+	camera = $Pivot/Camera                   # FIXME (fragile link; make external)
+	pivot = $Pivot                           # FIXME (fragile link; make external)
 	display_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
-	knight = $knight # FIXME (fragile link; make external)
+	knight = $knight                         # FIXME (fragile link; make external)
 	
 	# Hide all the Menus
 	pause_menu.hide()
@@ -95,6 +96,7 @@ func _ready():
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	motion = Vector3()
+	paused = false
 	
 	print("SERVER.player._ready() = done")
 
@@ -112,13 +114,15 @@ func _unhandled_input(event):
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
 			pause_menu.hide()
+			paused = false
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if mouse_captured:
 			print("BANG!")
 	
 	# Escape
 	if event.is_action_pressed("ui_cancel"):
-		if mouse_captured:
+		if mouse_captured and not paused:
+			paused = true
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			pause_menu.show()
 	
