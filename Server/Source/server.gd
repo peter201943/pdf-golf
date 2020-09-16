@@ -99,10 +99,19 @@ func player_disconnected(id):
 
 
 func remove_player(id):
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	Destroys the instance of a player from the map
+	"""
+	
+	# Refresh map variables
 	var root = get_tree().get_root()
 	var world = root.get_node(map_name)
-	world.get_node("Players/" + str(id)).queue_free()  # FIXME (fragile link; make external)
+	
+	# Delete the player node
+	for player in world.get_node("Players/").get_children(): # FIXME (fragile link; make external)
+		if player.name == str(id):
+			player.queue_free()
+	
 	print("player: " + str(id) + " left the game")
 
 
