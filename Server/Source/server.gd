@@ -4,6 +4,15 @@ extends Node
 
 """
 SERVER network
+
+2020-09-17:
+- noticed that there needs to be two nodes, both called `network` on the *client* and the *server*
+- I do not know why, it just is
+- both are set in strange ways:
+	- client: `network` is an AUTOLOAD, otherwise called a \"singleton\", and is automatically inserted into every scene
+	- server: `network` is NOT an autoload, it is a child within the `network` SCENE
+- I will try setting the names from the SCENES to see if that fixes it
+- then I will try making a duplicate `client` node in the server-network scene
 """ # FIXME (documentation missing)
 
 
@@ -35,8 +44,8 @@ var next_spawn_transform: Transform
 func _ready():
 	"""
 	Connects Player Signals, resets global variables, Hosts the Game
+	2020-09-17: before `_ready()` is even called, `network` node is already in the tree
 	"""
-	
 	var _error
 	_error = get_tree().connect("network_peer_connected", self, "player_connected")
 	_error = get_tree().connect("network_peer_disconnected", self, "player_disconnected")
@@ -116,7 +125,9 @@ func remove_player(id):
 
 
 func host_game():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	2020-09-17: before we even create an enet daemon, the `network` node already exists in the tree!
+	""" # FIXME (documentation missing)
 	
 	# Instantiate the ENET daemon
 	var host = NetworkedMultiplayerENet.new()
