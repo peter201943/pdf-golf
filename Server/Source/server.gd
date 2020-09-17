@@ -5,7 +5,6 @@ extends Node
 """
 SERVER network
 """ # FIXME (documentation missing)
-# FIXME (rename this script from `Server/Source/network.gd` to `server.gd`)
 
 
 # What we instantiate per player
@@ -37,10 +36,11 @@ func _ready():
 	"""
 	Connects Player Signals, resets global variables, Hosts the Game
 	"""
-	# warning-ignore:return_value_discarded
-	get_tree().connect("network_peer_connected", self, "player_connected")
-	# warning-ignore:return_value_discarded
-	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
+	
+	var _error
+	_error = get_tree().connect("network_peer_connected", self, "player_connected")
+	_error = get_tree().connect("network_peer_disconnected", self, "player_disconnected")
+	
 	no_name_count = 0
 	host_game() # FIXME (tool-mode needs this to be controlled independently of start-up)
 

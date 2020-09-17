@@ -1,11 +1,14 @@
 # tool # FIXME (add tool mode)
 extends Node
 
+# FIXME (rename autoload-name ("network") to "client")
+
 
 """
 CLIENT network
+
+- follows the Signal Singleton pattern
 """ # FIXME (documentation missing)
-# FIXME (rename this script from `Client/Source/network.gd` to `client.gd`)
 
 
 # FIXME (documentation missing)
@@ -37,16 +40,12 @@ func _ready():
 	"""
 	attach network signals to local methods
 	"""
-	# warning-ignore:return_value_discarded
-	get_tree().connect("network_peer_connected",    self, "player_connected")
-	# warning-ignore:return_value_discarded
-	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
-	# warning-ignore:return_value_discarded
-	get_tree().connect("connected_to_server",       self, "_connected_ok")
-	# warning-ignore:return_value_discarded
-	get_tree().connect("connection_failed",         self, "_connection_failed")
-	# warning-ignore:return_value_discarded
-	get_tree().connect("server_disconnected",       self, "_server_disconnected")
+	var _error
+	_error = get_tree().connect("network_peer_connected",    self, "player_connected")
+	_error = get_tree().connect("network_peer_disconnected", self, "player_disconnected")
+	_error = get_tree().connect("connected_to_server",       self, "_connected_ok")
+	_error = get_tree().connect("connection_failed",         self, "_connection_failed")
+	_error = get_tree().connect("server_disconnected",       self, "_server_disconnected")
 
 
 func _connected_ok():
@@ -62,7 +61,10 @@ func _connection_failed():
 
 
 func _server_disconnected():
-	"""briefly describe why this is here""" # FIXME (documentation missing)
+	"""
+	allow us to catch when the server has disconnected us
+	"""
+	print("I (CLIENT) have been disconnected by THEM (SERVER)")
 	emit_signal("game_error", "Server disconnected")
 	end_game()
 

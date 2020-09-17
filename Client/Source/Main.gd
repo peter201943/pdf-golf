@@ -10,14 +10,11 @@ func _ready():
 	print("CLIENT.Main.Main._ready = loading")
 	
 	# Connect the Signals
-	# warning-ignore:return_value_discarded
-	network.connect("connection_failed",    self, "_on_connection_failed")
-	# warning-ignore:return_value_discarded
-	network.connect("connection_succeeded", self, "_on_connection_success")
-	# warning-ignore:return_value_discarded
-	network.connect("game_ended",           self, "_on_game_ended")
-	# warning-ignore:return_value_discarded
-	network.connect("game_error",           self, "_on_game_error")
+	var _error
+	_error = network.connect("connection_failed",    self, "_on_connection_failed")
+	_error = network.connect("connection_succeeded", self, "_on_connection_success")
+	_error = network.connect("game_ended",           self, "_on_game_ended")
+	_error = network.connect("game_error",           self, "_on_game_error")
 	
 	# Set a name
 	if OS.has_environment("USERNAME"):

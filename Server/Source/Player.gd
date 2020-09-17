@@ -294,9 +294,9 @@ func handle_input():
 		players_menu.hide()
 
 
-puppet func play_anim(anim):
+puppet func play_anim(other_anim):
 	"""
 	Allow SELF or OTHERS to tell my MODEL to animate
 	"""
-	knight.play_anim(anim)
+	knight.play_anim(other_anim)
 
