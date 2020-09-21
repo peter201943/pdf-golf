@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/first-call.ogg-ed0ee41d62f39d6ccddb52aee27fc60a.oggstr"
+
+[deps]
+
+source_file="res://misc/first-call.ogg"
+dest_files=[ "res://.import/first-call.ogg-ed0ee41d62f39d6ccddb52aee27fc60a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
