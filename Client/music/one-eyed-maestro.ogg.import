@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/one-eyed-maestro.ogg-f63c74d8f9dd3bc1a14a1f9c68da3f0d.oggstr"
+
+[deps]
+
+source_file="res://music/one-eyed-maestro.ogg"
+dest_files=[ "res://.import/one-eyed-maestro.ogg-f63c74d8f9dd3bc1a14a1f9c68da3f0d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
