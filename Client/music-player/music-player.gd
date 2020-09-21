@@ -76,9 +76,8 @@ func load_folder(value: String) -> void:
 	playlist.clear()
 	#for music_file in load(music_folder):
 		#playlist.append(load(music_file))
-	var what_is_this = load_folder(music_folder)
-	print(what_is_this)
-	print(typeof(what_is_this))
+	
+	# var what_is_this = load_folder(music_folder) # ATTN: This will crash the game!!!
 	
 	# reshuffle the playlist
 	shuffled = true
