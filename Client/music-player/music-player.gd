@@ -33,8 +33,8 @@ export(String, DIR) var music_folder = "res://music/" setget load_folder
 export(int, 0, 255) var current_song: int = 0 setget change_song
 
 # What the queue of music currently is
-export(Array, String) var playlist: Array
-# export(Array, Resource) var playlist: Array
+export(Array, Resource) var playlist: Array
+# export(Array, String) var playlist: Array
 var playlist_size: int = 0
 
 
@@ -42,7 +42,11 @@ func _ready():
 	"""
 	Reset Random (for shuffling)
 	"""
+	
+	# No Identical Shuffles
 	randomize()
+	
+	# prevent unloaded player
 	_check_player()
 
 
@@ -50,22 +54,29 @@ func play(value: bool) -> void:
 	"""
 	Allow an Editor to test playback and behavior of music player
 	"""
+	
+	# prevent unloaded player
 	_check_player()
+	
 	playing = value
+	
 	if playing:
 		player.play()
-		# $AudioStreamPlayer.play()
+	
 	if not playing:
 		player.stop()
-		# $AudioStreamPlayer.stop()
 
 
 func shuffle(_value: bool) -> void:
 	"""
 	Allow an Editor to Re-Shuffle the Tracks
 	"""
-	_check_player()
+	
 	# Note, we do not ever set shuffle to true, since it has no state
+	
+	# prevent unloaded player
+	_check_player()
+	
 	# Shuffle the playlist
 	self.playlist.shuffle()
 	
@@ -75,6 +86,7 @@ func load_folder(value: String) -> void:
 	Allow anyone to load a different folder of music
 	"""
 	
+	# prevent unloaded player
 	_check_player()
 	
 	# Does NOT Trigger the Setter
@@ -82,11 +94,14 @@ func load_folder(value: String) -> void:
 	
 	# on get new folder location, refresh the playlist
 	playlist.clear()
-	for file_name in _find_files(music_folder): # FIXME!
-		# print(file_name) # DEBUG (deleteme)
-		# playlist += [file_name] # Just Load the Strings
-		playlist += [load(file_name)] # Actually Load the Resource
-	
+	for file_name in _find_files(music_folder):
+		
+		# Set some info about the stream each time
+		var temp:AudioStreamOGGVorbis = load(file_name)
+		temp.loop = false
+		temp.resource_name = file_name
+		playlist += [temp]
+
 	# reset the playlist size
 	playlist_size = playlist.size()
 
@@ -99,21 +114,21 @@ func change_song(value: int) -> void:
 	Also handle out of range values
 	"""
 	
+	# prevent unloaded player
 	_check_player()
 	
 	# Do not accept out of bound values
 	# If found, reset to first song
-	if value < 0 or value > playlist_size:
+	if value < 0 or value > playlist_size - 1:
 		value = 0
 	
 	# Does NOT Trigger the Setter
 	current_song = value
 
 	# Load the Song
-	print(playlist[current_song])
-	# player.stream = load(playlist[current_song]) # For Loading a String
-	player.stream = playlist[current_song] # For Loading a Resource
-	player.stream.loop = false
+	print("Now Playing: " + str(playlist[current_song].resource_name))
+	player.stream = playlist[current_song]
+	# player.stream.loop = false # DEBUG (do we need this line?)
 	
 	# Resume Previous State
 	if playing:
@@ -124,6 +139,7 @@ func _on_AudioStreamPlayer_finished():
 	"""
 	When player finishes, load the next song
 	"""
+	# prevent unloaded player
 	_check_player()
 	# Trigger the Setter
 	self.current_song += 1
@@ -136,6 +152,7 @@ func _find_files(path: String) -> Array:
 	(shamelessy stolen from https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder?show=80274#a80274)
 	"""
 	
+	# prevent unloaded player
 	_check_player()
 	
 	# Setup Reading the Dir
