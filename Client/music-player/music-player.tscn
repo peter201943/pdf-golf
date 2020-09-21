@@ -17,9 +17,9 @@ script = ExtResource( 1 )
 playing = true
 player_path = NodePath("AudioStreamPlayer")
 music_folder = "res://music"
-current_song = 5
+current_song = 6
 playlist = [ ExtResource( 3 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 5 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 8 ) ]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
+stream = ExtResource( 7 )
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]

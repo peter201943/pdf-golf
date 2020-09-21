@@ -9,6 +9,7 @@ extends Node
 Play a Shuffled Selection of Music in Game
 
 ## Help
+- NOTE! The inspector does not automatically refresh. You need to click on something else to update the info displayed
 - https://godotengine.org/qa/6099/list-of-export-hints
 	- amazing resource, keep it!
 - https://godotengine.org/qa/570/how-to-play-audio-whilst-changing-scene
@@ -34,7 +35,6 @@ export(int, 0, 255) var current_song: int = 0 setget change_song
 
 # What the queue of music currently is
 export(Array, Resource) var playlist: Array
-# export(Array, String) var playlist: Array
 var playlist_size: int = 0
 
 
@@ -125,10 +125,11 @@ func change_song(value: int) -> void:
 	# Does NOT Trigger the Setter
 	current_song = value
 
+	# Show What's Next
+	print("Now Playing: " + str(playlist[current_song].resource_name) + "[" + str(current_song) + "]")
+	
 	# Load the Song
-	print("Now Playing: " + str(playlist[current_song].resource_name))
 	player.stream = playlist[current_song]
-	# player.stream.loop = false # DEBUG (do we need this line?)
 	
 	# Resume Previous State
 	if playing:
