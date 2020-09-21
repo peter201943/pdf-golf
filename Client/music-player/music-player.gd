@@ -3,9 +3,15 @@ extends Node
 
 
 """
+# Music Player
+
+## About
 Play a Shuffled Selection of Music in Game
+
+## Help
 - https://godotengine.org/qa/6099/list-of-export-hints
 	- amazing resource, keep it!
+- https://godotengine.org/qa/570/how-to-play-audio-whilst-changing-scene
 """
 
 
@@ -21,6 +27,9 @@ export var shuffled: bool = false setget shuffle
 # Where we load our music from
 export(String, DIR) var music_folder = "res://music/" setget load_folder
 
+# Where we currently are in the playlist
+export(int, 0, 255) var current_song: int = 0
+
 # What the queue of music currently is
 export(Array, Resource) var playlist: Array
 
@@ -35,6 +44,7 @@ func _ready():
 	player = get_node("AudioStreamPlayer")
 	
 	# Get the Tracks (Load from Filesystem)
+	# load_folder(music_folder) # ATTN (do we need this step? This will have already been loaded, and we do not want to reset this)
 	
 	# Shuffle the Tracks
 	shuffled = true
@@ -80,9 +90,12 @@ func load_folder(value: String) -> void:
 	# var what_is_this = load_folder(music_folder) # ATTN: This will crash the game!!!
 	
 	# reshuffle the playlist
-	shuffled = true
+	# shuffled = true # ATTN (do we want to reshuffle each time? maybe this is better left manually controlled)
 
 
-
-
-
+func _on_AudioStreamPlayer_finished():
+	"""
+	When player finishes, load the next song
+	If at end of list, move back to front
+	"""
+	pass # Replace with function body.

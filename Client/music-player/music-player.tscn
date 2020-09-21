@@ -4,7 +4,8 @@
 
 [node name="music-player" type="Node"]
 script = ExtResource( 1 )
-shuffled = true
 music_folder = "res://music"
+current_song = 5
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
