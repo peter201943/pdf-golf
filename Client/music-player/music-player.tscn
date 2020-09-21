@@ -1,10 +1,22 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://music-player/music-player.gd" type="Script" id=1]
+[ext_resource path="res://music/circus-of-freaks.ogg" type="AudioStream" id=2]
+[ext_resource path="res://music/blobby-samba.ogg" type="AudioStream" id=3]
+[ext_resource path="res://music/winner-winner.ogg" type="AudioStream" id=4]
+[ext_resource path="res://music/del-rio-bravo.ogg" type="AudioStream" id=5]
+[ext_resource path="res://music/bumbly-march.ogg" type="AudioStream" id=6]
+[ext_resource path="res://music/tango-de-manzana.ogg" type="AudioStream" id=7]
+[ext_resource path="res://music/the-cannery.ogg" type="AudioStream" id=8]
+[ext_resource path="res://music/one-eyed-maestro.ogg" type="AudioStream" id=9]
+[ext_resource path="res://music/the-builder.ogg" type="AudioStream" id=10]
+[ext_resource path="res://music/super-polka.ogg" type="AudioStream" id=11]
 
 [node name="music-player" type="Node"]
 script = ExtResource( 1 )
-music_folder = "res://music"
+player_path = NodePath("AudioStreamPlayer")
+playlist = [ ExtResource( 3 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 4 ) ]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
