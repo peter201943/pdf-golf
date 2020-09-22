@@ -1,5 +1,9 @@
 
 
+## ***WARNING!!!***
+### THIS IS A HACK!!!!
+### BEWARE ANY CODE FOUND HERE!!!
+### FOR THE LOVE OF GODEL, DONT USE THIS PAST 2020-09-30!!!
 
 
 # Griefers' Golf
