@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/tiles.ogg-4bf23e12bda91b25753dd5deae8b1501.oggstr"
+
+[deps]
+
+source_file="res://map/houses/tiles.ogg"
+dest_files=[ "res://.import/tiles.ogg-4bf23e12bda91b25753dd5deae8b1501.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

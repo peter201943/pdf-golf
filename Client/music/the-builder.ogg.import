@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/the-builder.ogg-ad6fddd4b5efeb7544b3ee8fd2cc7a41.oggstr"
+
+[deps]
+
+source_file="res://music/the-builder.ogg"
+dest_files=[ "res://.import/the-builder.ogg-ad6fddd4b5efeb7544b3ee8fd2cc7a41.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

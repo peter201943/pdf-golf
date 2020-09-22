@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/charge-lift-1.ogg-d62f1c6ea03bf37d9e483c33a9093271.oggstr"
+
+[deps]
+
+source_file="res://character/golfer/charge/charge-lift-1.ogg"
+dest_files=[ "res://.import/charge-lift-1.ogg-d62f1c6ea03bf37d9e483c33a9093271.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

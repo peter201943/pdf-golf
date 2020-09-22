@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/big-laugh-4.ogg-46ea104f1c8490777514cddc4474f73d.oggstr"
+
+[deps]
+
+source_file="res://character/golfer/big-laugh/big-laugh-4.ogg"
+dest_files=[ "res://.import/big-laugh-4.ogg-46ea104f1c8490777514cddc4474f73d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

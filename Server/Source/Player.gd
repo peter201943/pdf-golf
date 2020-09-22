@@ -1,160 +1,302 @@
+# tool # FIXME (add tool mode)
 extends KinematicBody
 
-onready var camera = $Pivot/Camera
 
-const MOTION_SPEED = 8
+"""
+SERVER player
 
+This script serves as both a PUPPET and a PLAYER
+- A *PUPPET* is a *robot*, it receives instructions over the Internet from a REAL player
+- A *PLAYER* emits instructions over the Internet that *PUPPETS* receive
+
+This script handles
+- networking (remote calls)
+- mouse input (look, fire)
+- keyboard input (menus)
+- physics (falling, motion)
+- menus (pause, main)
+- hud's (nametag)
+"""
+
+
+# What the player looks with
+var camera: Camera
+var pivot: Spatial
+
+# How the player indicates how to move around
+var camera_basis: Basis
+var direction: Vector3
+
+# How PUPPETS move around
 puppet var puppet_transform
 puppet var puppet_motion = Vector3()
-var motion = Vector3()
 
-var random_number_generator = RandomNumberGenerator.new()
+# How PLAYERS move around
+var motion: Vector3
+var anim: String
 
-export var speed = 100
-export var acceleration = 5
-export var gravity = 0.98
-export var jump_power = 30
-export var mouse_sensitivity = 0.003
+# Adjust how the player moves around
+export var speed:int = 100                  # how quickly a player can move
+export var acceleration:int = 5             # how quickly a player approaches max speed
+export var gravity:float = 0.98             # how fast a player falls
+export var jump_power:int = 30              # how high a player can jump
+export var mouse_sensitivity:float = 0.003  # how quickly to turn the mouse
 
-var last_motion
-var last_transform
+# Record Change Across Frames
+# (these are needed by the server to know)
+# (when a player moves in a new direction)
+var last_anim: String           # If we change animation
+var last_motion: Vector3        # If we change direction
+var last_transform: Transform   # If we change position
 
-onready var knight = $knight
+# What is displayed and animated
+var knight
+
+# On-Screen Menus
+var players_menu: ColorRect # shows the current players
+var players_list: ItemList  # the actual list of players
+var pause_menu: ColorRect   # allows players to exit during game
+var display_name: Label     # floating name-tag above player
+var paused: bool            # if the pause menu is being shown
+
+# Debugging
+var is_puppet: bool
 
 
 func _ready():
-	$HUD/Panel.hide()
-	$HUD/Players.hide()
+	"""
+	Capture mouse, reset variables, resync with puppet
+	"""
+	
+	print("SERVER.player._ready() = loading")
+	
+	# Bind the References
+	players_menu = $HUD/Players              # FIXME (fragile link; make external)
+	players_list = $HUD/Players/List         # FIXME (fragile link; make external)
+	pause_menu = $HUD/Panel                  # FIXME (fragile link; make external)
+	camera = $Pivot/Camera                   # FIXME (fragile link; make external)
+	pivot = $Pivot                           # FIXME (fragile link; make external)
+	display_name = $Name/Viewport/GUI/Player # FIXME (fragile link; make external)
+	knight = $knight                         # FIXME (fragile link; make external)
+	
+	# Hide all the Menus
+	pause_menu.hide()
+	players_menu.hide()
+	
+	# Network Setup
 	if is_network_master():
 		camera.current = true
-		set_color()
+		print("I AM NOT A PUPPET!")
+		is_puppet = false
+	else:
+		print("I am a puppet...")
+		is_puppet = true
+	
+	# Reset global variables
 	puppet_transform = transform
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
-func set_color():
-	var material = $Model.get_surface_material(0)
-	random_number_generator.randomize()
-	var r = random_number_generator.randf_range(0.0, 1.0)
-	random_number_generator.randomize()
-	var g = random_number_generator.randf_range(0.0, 1.0)
-	random_number_generator.randomize()
-	var b = random_number_generator.randf_range(0.0, 1.0)
-	var color = Vector3(r, g, b).normalized()
-	material.albedo_color = Color(color.x, color.y, color.z, 1.0)
+	motion = Vector3()
+	paused = false
+	
+	print("SERVER.player._ready() = done")
 
 
 func _unhandled_input(event):
+	"""
+	Mouselook, Mousepress, and Escape User Input
+	"""
+	
+	# Let
 	var mouse_motion = event is InputEventMouseMotion
 	var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	
+	# Mouse Left
 	if event.is_action_pressed("shoot"):
 		if !mouse_captured:
-			$HUD/Panel.hide()
+			pause_menu.hide()
+			paused = false
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
-			release_mouse()
-			$HUD/Panel.show()
+			print("BANG!")
+	
+	# Escape
+	if event.is_action_pressed("ui_cancel"):
+		if mouse_captured and not paused:
+			paused = true
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			pause_menu.show()
+	
+	# Mouselook
 	if mouse_motion and mouse_captured:
 		rotate_y(-event.relative.x * mouse_sensitivity)
-		$Pivot.rotate_x(-event.relative.y * mouse_sensitivity)
-		$Pivot.rotation.x = clamp($Pivot.rotation.x, -0.8, 0.8)
+		pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+		pivot.rotation.x = clamp(pivot.rotation.x, -0.8, 0.4)
 
 
 func _physics_process(delta):
+	"""
+	Updates variables, moves the player, gets player input,
+	handles that input, applies effects, changes, and updates
+	"""
+	refresh_physics_variables()
+	if not is_puppet:
+		apply_human_direction(delta)
+		apply_effects()
+		apply_updates()
+		apply_history()
+	if is_puppet:
+		apply_puppet_direction()
+	apply_motion()
+
+
+func refresh_physics_variables():
+	"""
+	Every physics cycle, update anything for physics
+	"""
+	
+	# Reset the Forward/Backward and Left/Right motion
 	motion.x = 0
 	motion.z = 0
+
+	# Refresh the camera and direction
+	camera_basis = camera.global_transform.basis
+	direction = Vector3()
 	
-	var camera_basis = camera.global_transform.basis
-	var direction = Vector3()
+
+func apply_human_direction(delta):
+	"""Let a human set the input"""
 	
-	if is_network_master():
-		if Input.is_action_pressed("move_forward"):
-			direction -= camera_basis.z
-			if direction.y != 0:
-				direction.y = 0
-		if Input.is_action_pressed("move_back"):
-			direction += camera_basis.z
-			if direction.y != 0:
-				direction.y = 0
-		if Input.is_action_pressed("strafe_left"):
-			direction -= camera_basis.x
-		if Input.is_action_pressed("strafe_right"):
-			direction += camera_basis.x
-		
-		direction = direction.normalized()
-		
-		motion = motion.linear_interpolate(direction * speed, acceleration * delta)
-		motion.y -= gravity
-		
-		if Input.is_action_just_pressed("jump") and is_on_floor():
-			motion.y = jump_power
-		
-		var anim
-		
-		if motion.x != 0 or motion.z != 0:
-			anim = "walk"
-		else:
-			anim = "idle"
-		
-		play_anim(anim)
-		if last_motion != motion:
-			rpc('play_anim', anim)
-			rset("puppet_motion", motion)
-		if last_transform != transform:
-			rset("puppet_transform", transform)
-		
-		last_motion = motion
-		last_transform = transform
-		
-	else:
-		transform = puppet_transform
-		motion = puppet_motion
-		
-	move_and_slide(motion, Vector3.UP, true)
-	if not is_network_master():
+	# get the Intended Direction
+	if Input.is_action_pressed("move_forward"):
+		direction -= camera_basis.z
+	if Input.is_action_pressed("move_back"):
+		direction += camera_basis.z
+	if Input.is_action_pressed("strafe_left"):
+		direction -= camera_basis.x
+	if Input.is_action_pressed("strafe_right"):
+		direction += camera_basis.x
+	
+	# Reset the `y`. Somehow moving around messes this up.
+	direction.y = 0
+	
+	# Prevent going faster diagonally
+	direction = direction.normalized()
+	
+	# Apply speed and acceleration
+	motion = motion.linear_interpolate(direction * speed, acceleration * delta)
+	
+	# Apply falling
+	motion.y -= gravity
+	
+	# Add the vertical component if the player jumps
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		motion.y = jump_power
+
+
+func apply_effects():
+	"""
+	Every physics frame, any animations
+	"""
+	
+	# Set the animation state and play
+	anim = 'idle'
+	if motion.x + motion.z != 0:
+		anim = "walk"
+	play_anim(anim)
+	
+
+func apply_updates():
+	"""
+	Every phyics frame, anything ther server might need to know
+	"""
+	
+	# When we have stopped moving, update the server
+	if last_anim != anim:
+		rpc('play_anim', anim)
+	
+	# Motion ???
+	if last_motion != motion:
+		rpc('play_anim', anim)
+		rset("puppet_motion", motion)
+	
+	# Transform ???
+	if last_transform != transform:
+		rset("puppet_transform", transform)
+
+
+func apply_history():
+	"""Update last ___ for next cycle"""
+	last_anim = anim
+	last_motion = motion
+	last_transform = transform
+
+
+func apply_puppet_direction():
+	"""
+	If we are a puppet, we need the server's
+	instance of our transform and motion
+	"""
+	transform = puppet_transform
+	motion = puppet_motion
+	
+
+func apply_motion():
+	"""
+	Every cycle, move the player and update the puppet
+	"""
+	# Move the Player
+	motion = move_and_slide(motion, Vector3.UP, true)
+	# update the puppet after the puppet has moved around
+	if is_puppet:
 		puppet_transform = transform
 
 
-func set_player_name(player):
-	$Name/Viewport/GUI/Player.text = player
-
-
 func _on_cancel_button_pressed():
-	$HUD/Panel.hide()
-	release_mouse()
-
-
-func capture_mouse():
+	"""when user wants to resume playing game"""
+	pause_menu.hide()
+	paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
-func release_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-
 func _on_quit_button_pressed():
+	"""when user wants to stop playing game"""
 	get_tree().set_network_peer(null)
-	#network.end_game()
+	# if not is_puppet:
+		# network.end_game() # FIXME (this function only exists in CLIENT player)
 
 
 func update_list():
-	$HUD/Players/List.clear()
-	#for player in network.players:
-	#	$HUD/Players/List.add_item(network.players[player])
+	"""Updates the list of actively playing users"""
+	if not is_puppet:
+		players_list.clear()
+		# for player in network.players: # FIXME (this function only exists in CLIENT player)
+			# players_list.add_item(network.players[player])
 
 
-func _process(delta):
+func _process(_delta):
+	"""
+	2020-09-13: Just handles input
+	"""
 	handle_input()
 
 
 func handle_input():
+	"""
+	FIXED (keyboard) inputs
+	- scoreboard
+	"""
+	
 	if Input.is_action_just_pressed("tab"):
 		update_list()
-		$HUD/Players.show()
+		players_menu.show()
+		
 	if Input.is_action_just_released("tab"):
-		$HUD/Players.hide()
+		players_menu.hide()
 
 
-puppet func play_anim(anim):
-	knight.play_anim(anim)
+puppet func play_anim(other_anim):
+	"""
+	Allow SELF or OTHERS to tell my MODEL to animate
+	"""
+	knight.play_anim(other_anim)
+

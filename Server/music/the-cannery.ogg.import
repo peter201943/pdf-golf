@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/the-cannery.ogg-e8c3f53642b0b3ca79497c2aca758cb9.oggstr"
+
+[deps]
+
+source_file="res://music/the-cannery.ogg"
+dest_files=[ "res://.import/the-cannery.ogg-e8c3f53642b0b3ca79497c2aca758cb9.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
