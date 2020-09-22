@@ -3,7 +3,8 @@
 [ext_resource path="res://Source/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BaksoSapi.otf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/FinalModels/knight.tscn" type="PackedScene" id=3]
-[ext_resource path="res://music-player/music-player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://character/music-player/music-player.tscn" type="PackedScene" id=4]
+
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5

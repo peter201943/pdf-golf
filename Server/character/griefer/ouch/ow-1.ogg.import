@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/ow-1.ogg-33272bf7b92cf3a8d47093eb58df22f2.oggstr"
+
+[deps]
+
+source_file="res://character/griefer/ouch/ow-1.ogg"
+dest_files=[ "res://.import/ow-1.ogg-33272bf7b92cf3a8d47093eb58df22f2.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

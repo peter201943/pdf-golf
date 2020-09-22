@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/giggle-0.ogg-aeb73696b112b8cfeae04e484a1d605b.oggstr"
+
+[deps]
+
+source_file="res://character/griefer/giggle/giggle-0.ogg"
+dest_files=[ "res://.import/giggle-0.ogg-aeb73696b112b8cfeae04e484a1d605b.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

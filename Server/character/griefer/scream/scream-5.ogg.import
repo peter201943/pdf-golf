@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/scream-5.ogg-fe9473c24fc715f284bea620e0428b3d.oggstr"
+
+[deps]
+
+source_file="res://character/griefer/scream/scream-5.ogg"
+dest_files=[ "res://.import/scream-5.ogg-fe9473c24fc715f284bea620e0428b3d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
