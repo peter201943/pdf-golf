@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/charge-long-1.ogg-310e8a07d0deb6f255c84dc5d0a95feb.oggstr"
+
+[deps]
+
+source_file="res://characters/golfer/charge/charge-long-1.ogg"
+dest_files=[ "res://.import/charge-long-1.ogg-310e8a07d0deb6f255c84dc5d0a95feb.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/cannonball-whistle.ogg-00d8e881425fb638283d009aabdd4d92.oggstr"
+
+[deps]
+
+source_file="res://character/golf-ball/flight/cannonball-whistle.ogg"
+dest_files=[ "res://.import/cannonball-whistle.ogg-00d8e881425fb638283d009aabdd4d92.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

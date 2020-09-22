@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/long-scream-0.ogg-701b0ff56b215917556baff2d3a628c3.oggstr"
+
+[deps]
+
+source_file="res://characters/griefer/scream/long-scream-0.ogg"
+dest_files=[ "res://.import/long-scream-0.ogg-701b0ff56b215917556baff2d3a628c3.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

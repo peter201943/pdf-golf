@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/rocket-whistle.ogg-0ed915f4474372d3da29c657c8f79292.oggstr"
+
+[deps]
+
+source_file="res://character/golf-ball/flight/rocket-whistle.ogg"
+dest_files=[ "res://.import/rocket-whistle.ogg-0ed915f4474372d3da29c657c8f79292.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

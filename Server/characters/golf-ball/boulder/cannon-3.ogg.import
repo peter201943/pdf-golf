@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/cannon-3.ogg-da1b0b65a839d25585a4a1bb9d820a36.oggstr"
+
+[deps]
+
+source_file="res://characters/golf-ball/boulder/cannon-3.ogg"
+dest_files=[ "res://.import/cannon-3.ogg-da1b0b65a839d25585a4a1bb9d820a36.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

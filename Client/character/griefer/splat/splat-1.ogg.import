@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/splat-1.ogg-afeb78dfaad35bb82a742feb214cef31.oggstr"
+
+[deps]
+
+source_file="res://character/griefer/splat/splat-1.ogg"
+dest_files=[ "res://.import/splat-1.ogg-afeb78dfaad35bb82a742feb214cef31.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
