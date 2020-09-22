@@ -39,7 +39,7 @@ margin_bottom = 124.529
 grow_horizontal = 2
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Network FPS"
+text = "Griefer's Golf"
 align = 1
 valign = 1
 __meta__ = {
@@ -114,7 +114,7 @@ margin_bottom = 54.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 2 )
-text = "109.237.27.172"
+text = "127.0.0.1"
 
 [node name="Port" type="HBoxContainer" parent="."]
 anchor_left = 0.5
@@ -224,8 +224,8 @@ grow_horizontal = 2
 rect_min_size = Vector2( 104, 44 )
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 0.368627, 0.368627, 1 )
-text = "official dedicated server
-109.237.27.172
+text = "Peter's Server
+174.60.76.152
 5000"
 align = 1
 valign = 1
