@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/slam-3.ogg-e4b3bb9f09189473f28af8a8aa695b4a.oggstr"
+
+[deps]
+
+source_file="res://terrain/slam-3.ogg"
+dest_files=[ "res://.import/slam-3.ogg-e4b3bb9f09189473f28af8a8aa695b4a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
