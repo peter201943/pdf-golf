@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://HACK/sounds.gd" type="Script" id=1]
+
+[node name="sounds" type="Node"]
+script = ExtResource( 1 )
+
+[node name="hurt" type="AudioStreamPlayer3D" parent="."]
+
+[node name="heal" type="AudioStreamPlayer3D" parent="."]
+
+[node name="score" type="AudioStreamPlayer3D" parent="."]
+
+[node name="loss" type="AudioStreamPlayer3D" parent="."]
