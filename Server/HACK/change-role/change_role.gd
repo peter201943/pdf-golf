@@ -17,6 +17,7 @@ func _ready():
 	add_item("Golf Ball", 2)
 	add_item("Trap", 3)
 	add_item("House", 4)
+	select(0)
 
 
 

@@ -19,6 +19,33 @@ This script handles
 """
 
 
+"""BEGIN HACK"""
+
+# what we are
+var role: String
+
+# Our health
+export var health_path: NodePath = "health"
+onready var health: Node = get_node(health_path)
+
+# Our Score
+export var score_path: NodePath = "score"
+onready var score: Node = get_node(score_path)
+
+# Our Golf Ball
+# export var golf_ball_res: Resource
+onready var golf_ball_res = load("res:///HACK/golf-ball/golf-ball-HACK.tscn")
+var golf_ball
+
+# Our Trap
+# export var zap_trap_res: Resource
+onready var zap_trap_res = load("res:///HACK/zap-trap/zap-trap-HACK.tscn")
+var zap_traps: Array
+
+"""END HACK"""
+
+
+
 # What the player looks with
 var camera: Camera
 var pivot: Spatial
@@ -97,6 +124,14 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	motion = Vector3()
 	paused = false
+	
+	"""BEGIN HACK"""
+
+	role = "griefer"
+	zap_traps = []
+	golf_ball = null
+
+	"""END HACK"""
 	
 	print("CLIENT.player._ready() = done")
 
@@ -323,10 +358,49 @@ puppetsync func fire():
 	"""
 	if is_puppet:
 		print("\tPUPPET: fire!")
-		return
 	if not is_puppet:
 		print("\tME: fire!")
-		return
+	
+	if role == "golfer":
+		print("BOOM")
+	if role == "griefer":
+		print("Tick Tick Tick...")
+
+
+puppetsync func _make_golfer():
+	self.scale = Vector3(10,20,30)
+	self.health.max_life = 300
+	self.health.life = 300
+	self.speed = 1000
+	self.translate(Vector3(0,10,0))
+	self.role = "golfer"
+	rpc("_spawn_boulder")
+
+
+puppetsync func _make_griefer():
+	self.scale = Vector3(1, 1, 1)
+	self.health.max_life = 50
+	self.health.life = 50
+	self.speed = 100
+	self.role = "griefer"
+	rpc("_remove_boulder")
+
+
+puppetsync func _spawn_boulder():
+	if golf_ball:
+		_remove_boulder()
+	golf_ball = golf_ball_res.instance()
+	golf_ball.name = "golf-ball"
+	get_parent().add_child(golf_ball)
+	golf_ball.global_transform = self.global_transform
+	golf_ball.scale = Vector3(3,3,3)
+	golf_ball.translate(Vector3(16,0,0))
+
+
+puppetsync func _remove_boulder():
+	if golf_ball:
+		get_parent().remove(golf_ball)
+		golf_ball.queue_free()
 
 
 
@@ -336,7 +410,9 @@ puppetsync func fire():
 
 
 
+func _on_change_role_MakeGolfer():
+	_make_golfer()
 
 
-
-
+func _on_change_role_MakeGriefer():
+	_make_griefer()

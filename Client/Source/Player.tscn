@@ -1,13 +1,9 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Source/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BaksoSapi.otf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/FinalModels/knight.tscn" type="PackedScene" id=3]
 [ext_resource path="res://character/music-player/music-player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://HACK/griefer/griefer-HACK.tscn" type="PackedScene" id=5]
-[ext_resource path="res://HACK/golfer/golfer-HACK.tscn" type="PackedScene" id=6]
-[ext_resource path="res://HACK/golf-ball/golf-ball-HACK.tscn" type="PackedScene" id=7]
-[ext_resource path="res://HACK/zap-trap/zap-trap-HACK.tscn" type="PackedScene" id=8]
 [ext_resource path="res://score/score.tscn" type="PackedScene" id=9]
 [ext_resource path="res://health/health.tscn" type="PackedScene" id=10]
 [ext_resource path="res://HACK/sounds/sounds.tscn" type="PackedScene" id=11]
@@ -232,14 +228,6 @@ shuffled = false
 current_song = 2
 playlist = [ ExtResource( 16 ), ExtResource( 13 ), ExtResource( 20 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 12 ), ExtResource( 19 ), ExtResource( 21 ) ]
 
-[node name="golfer-HACK" parent="." instance=ExtResource( 6 )]
-
-[node name="griefer-HACK" parent="." instance=ExtResource( 5 )]
-
-[node name="golf-ball-HACK" parent="." instance=ExtResource( 7 )]
-
-[node name="zap-trap-HACK" parent="." instance=ExtResource( 8 )]
-
 [node name="health" parent="." instance=ExtResource( 10 )]
 
 [node name="score" parent="." instance=ExtResource( 9 )]
@@ -257,3 +245,5 @@ playlist = [ ExtResource( 16 ), ExtResource( 13 ), ExtResource( 20 ), ExtResourc
 [connection signal="lost" from="score" to="sounds" method="_on_score_lost"]
 [connection signal="scored" from="score" to="sounds" method="_on_score_scored"]
 [connection signal="won" from="score" to="sounds" method="_on_score_won"]
+[connection signal="MakeGolfer" from="change_role" to="." method="_on_change_role_MakeGolfer"]
+[connection signal="MakeGriefer" from="change_role" to="." method="_on_change_role_MakeGriefer"]
