@@ -45,9 +45,13 @@ win_sounds = [ ExtResource( 27 ) ]
 start_sounds = [ ExtResource( 28 ) ]
 
 [node name="hurt" type="AudioStreamPlayer3D" parent="."]
+unit_db = 80.0
 
 [node name="heal" type="AudioStreamPlayer3D" parent="."]
+unit_db = 80.0
 
 [node name="score" type="AudioStreamPlayer3D" parent="."]
+unit_db = 80.0
 
 [node name="loss" type="AudioStreamPlayer3D" parent="."]
+unit_db = 80.0
