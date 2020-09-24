@@ -12,24 +12,28 @@ puppet var puppet_translation: Vector3
 var is_puppet: bool
 const delay_max: float = 0.5
 var delay: float
+var updates: int
 
 
 func _ready():
 	is_puppet = false
 	if is_network_master():
 		is_puppet = true
-		delay = 0.0
+	delay = 0.0
+	updates = 0
 
 
 func _physics_process(delta):
 	delay += delta
 	if delay >= delay_max:
+		delay = 0.0
+		updates += 1
 		if not is_puppet:
-			print("updating...")
+			print("updating... (" + str(updates) + ")")
 			rset("puppet_rotation", rotation)
 			rset("puppet_translation", translation)
 		if is_puppet:
-			print("getting updates...")
+			print("getting updates... (" + str(updates) + ")")
 			rotation = puppet_rotation
 			translation = puppet_translation
 

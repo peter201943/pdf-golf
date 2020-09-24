@@ -399,7 +399,6 @@ puppetsync func _spawn_boulder():
 
 puppetsync func _remove_boulder():
 	if golf_ball:
-		get_parent().remove(golf_ball)
 		golf_ball.queue_free()
 
 
