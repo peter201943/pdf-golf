@@ -10,16 +10,16 @@ Once Health is Drained below zero, health must be re-instantiated
 
 
 # when we gain health
-signal heal
+signal healed
 
 # when we lose health
 signal hurt
 
 # when we lose too much health
-signal die
+signal died
 
 # when we first start-up
-signal respawn
+signal respawned
 
 
 # Total Health we can Have
@@ -31,6 +31,10 @@ var life: int setget change_life
 # whether we can change health
 var alive: bool
 
+# UI
+export var display_node: NodePath = "count"
+onready var display: Label = get_node(display_node)
+
 
 func _ready():
 	"""
@@ -38,7 +42,8 @@ func _ready():
 	"""
 	life = max_life
 	alive = true
-	emit_signal("respawn")
+	emit_signal("respawned")
+	display.text = str(life)
 
 
 func change_life(value: int):
@@ -50,18 +55,22 @@ func change_life(value: int):
 	if not alive:
 		return
 	
+	# signal effects if hurt
 	if value < 0:
 		emit_signal("hurt")
-		
-	if value > 0:
-		emit_signal("heal")
 	
+	# signal effects if heal
+	if value > 0:
+		emit_signal("healed")
+	
+	# update counters
 	life += value
+	display.text = str(life)
 	
 	# check if we died
 	if life <= 0:
 		alive = false
-		emit_signal("die")
+		emit_signal("died")
 
 
 
