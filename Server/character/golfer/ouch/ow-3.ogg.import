@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/ow-3.ogg-e8bae3d5683552c507da0c84bf51dfd7.oggstr"
+
+[deps]
+
+source_file="res://character/golfer/ouch/ow-3.ogg"
+dest_files=[ "res://.import/ow-3.ogg-e8bae3d5683552c507da0c84bf51dfd7.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
