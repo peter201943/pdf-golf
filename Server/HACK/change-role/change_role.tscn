@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://HACK/change_role.gd" type="Script" id=1]
+[ext_resource path="res://HACK/change-role/change_role.gd" type="Script" id=1]
+
 
 [node name="change_role" type="OptionButton"]
 anchor_left = 0.5

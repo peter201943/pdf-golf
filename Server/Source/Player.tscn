@@ -1,16 +1,22 @@
 [gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Source/Player.gd" type="Script" id=1]
-[ext_resource path="res://HACK/golf-ball-HACK.tscn" type="PackedScene" id=2]
+[ext_resource path="res://HACK/golf-ball/golf-ball-HACK.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/FinalModels/knight.tscn" type="PackedScene" id=3]
-[ext_resource path="res://HACK/golfer-HACK.tscn" type="PackedScene" id=4]
+[ext_resource path="res://HACK/golfer/golfer-HACK.tscn" type="PackedScene" id=4]
 [ext_resource path="res://character/music-player/music-player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://HACK/griefer-HACK.tscn" type="PackedScene" id=6]
-[ext_resource path="res://HACK/zap-trap-HACK.tscn" type="PackedScene" id=7]
+[ext_resource path="res://HACK/griefer/griefer-HACK.tscn" type="PackedScene" id=6]
+[ext_resource path="res://HACK/zap-trap/zap-trap-HACK.tscn" type="PackedScene" id=7]
 [ext_resource path="res://score/score.tscn" type="PackedScene" id=8]
 [ext_resource path="res://health/health.tscn" type="PackedScene" id=9]
-[ext_resource path="res://HACK/sounds.tscn" type="PackedScene" id=10]
-[ext_resource path="res://HACK/change_role.tscn" type="PackedScene" id=11]
+[ext_resource path="res://HACK/sounds/sounds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://HACK/change-role/change_role.tscn" type="PackedScene" id=11]
+
+
+
+
+
+
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5

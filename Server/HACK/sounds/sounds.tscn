@@ -1,6 +1,6 @@
 [gd_scene load_steps=33 format=2]
 
-[ext_resource path="res://HACK/sounds.gd" type="Script" id=1]
+[ext_resource path="res://HACK/sounds/sounds.gd" type="Script" id=1]
 [ext_resource path="res://character/golfer/ouch/ow-4.ogg" type="AudioStream" id=2]
 [ext_resource path="res://character/golfer/ouch/ow-3.ogg" type="AudioStream" id=3]
 [ext_resource path="res://character/golfer/ouch/ow-2.ogg" type="AudioStream" id=4]
@@ -32,6 +32,7 @@
 [ext_resource path="res://character/griefer/scream/scream-1.ogg" type="AudioStream" id=30]
 [ext_resource path="res://misc/countdown.ogg" type="AudioStream" id=31]
 [ext_resource path="res://character/griefer/scream/long-scream-0.ogg" type="AudioStream" id=32]
+
 
 [node name="sounds" type="Spatial"]
 script = ExtResource( 1 )

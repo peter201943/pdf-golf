@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://HACK/zap-trap-HACK.gd" type="Script" id=1]
+[ext_resource path="res://HACK/zap-trap/zap-trap-HACK.gd" type="Script" id=1]
+
 
 [node name="zap-trap-HACK" type="Node"]
 script = ExtResource( 1 )
