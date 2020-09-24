@@ -10,10 +10,10 @@ Once Health is Drained below zero, health must be re-instantiated
 
 
 # when we gain health
-signal healed
+signal healed(amount)
 
 # when we lose health
-signal hurt
+signal hurt(amount)
 
 # when we lose too much health
 signal died
@@ -57,11 +57,11 @@ func change_life(value: int):
 	
 	# signal effects if hurt
 	if value < 0:
-		emit_signal("hurt")
+		emit_signal("hurt", value)
 	
 	# signal effects if heal
 	if value > 0:
-		emit_signal("healed")
+		emit_signal("healed", value)
 	
 	# update counters
 	life += value

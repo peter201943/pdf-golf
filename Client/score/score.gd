@@ -5,15 +5,15 @@ extends Node
 Keeps Count of Score
 Emits Helath-Related Signals
 
-Once Health is Drained below zero, health must be re-instantiated
+Once Score reaches Max, score must be re-instantiated
 """
 
 
 # when we score points
-signal scored
+signal scored(amount)
 
 # when we lose points
-signal lost
+signal lost(amount)
 
 # when we win the game
 signal won
@@ -57,11 +57,11 @@ func change_score(value: int):
 	
 	# signal effects if lose
 	if value < 0:
-		emit_signal("lost")
+		emit_signal("lost", value)
 	
 	# signal effects if score
 	if value > 0:
-		emit_signal("scored")
+		emit_signal("scored", value)
 	
 	# update counters
 	score += value
