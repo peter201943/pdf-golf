@@ -220,8 +220,8 @@ shuffled = false
 
 [node name="griefer-HACK" parent="." instance=ExtResource( 5 )]
 
-[node name="zap-trap-HACK" parent="." instance=ExtResource( 8 )]
-
 [node name="golf-ball-HACK" parent="." instance=ExtResource( 7 )]
+
+[node name="zap-trap-HACK" parent="." instance=ExtResource( 8 )]
 [connection signal="pressed" from="HUD/Panel/cancel_button" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="HUD/Panel/quit_button" to="." method="_on_quit_button_pressed"]
