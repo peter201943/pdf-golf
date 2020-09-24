@@ -15,6 +15,7 @@ help: https://godotengine.org/qa/8135/choosing-a-random-word-from-an-array
 # Prevent Irritating Errors
 var ready: bool = false
 var queue: Array = []
+var stream: AudioStream
 
 
 # Where we play hurt from (AND DIED)
@@ -99,42 +100,86 @@ Health Related Sound Effect Events
 """
 
 func _on_health_died():
+	
 	if not ready:
 		queue += [["_on_health_died"]]
 		return
+	
+	print("playing a death sound")
+	
 	if hurt.playing:
 		hurt.stop()
-	hurt.stream = death_sounds[randi() % deaths]
+	
+	# hurt.stream = death_sounds[randi() % deaths]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = death_sounds[randi() % deaths]
+	stream.loop = false
+	hurt.stream = stream
+	
 	hurt.play()
 
 
 func _on_health_healed(amount):
+	
 	if not ready:
 		queue += [["_on_health_healed"], amount]
 		return
+	
+	print("playing a heal sound")
+	
 	if heal.playing:
 		heal.stop()
-	heal.stream = heal_sounds[randi() % heals]
+	
+	# heal.stream = heal_sounds[randi() % heals]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = heal_sounds[randi() % heals]
+	stream.loop = false
+	heal.stream = stream
+	
 	heal.play()
 
 
 func _on_health_hurt(amount):
+	
 	if not ready:
 		queue += [["_on_health_hurt"], amount]
 		return
+	
+	print("playing a hurt sound")
+	
 	if hurt.playing:
 		hurt.stop()
-	hurt.stream = hurt_sounds[randi() % hurts]
+	
+	# hurt.stream = hurt_sounds[randi() % hurts]
+
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = hurt_sounds[randi() % hurts]
+	stream.loop = false
+	hurt.stream = stream
+	
 	hurt.play()
 
 
 func _on_health_respawned():
+	
 	if not ready:
 		queue += [["_on_health_respawned"]]
 		return
+	
+	print("playing a respawn sound")
+	
 	if heal.playing:
 		heal.stop()
-	heal.stream = respawn_sounds[randi() % respawns]
+	
+	# heal.stream = respawn_sounds[randi() % respawns]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = respawn_sounds[randi() % respawns]
+	stream.loop = false
+	heal.stream = stream
+	
 	heal.play()
 
 
@@ -143,41 +188,85 @@ Score Related Sound Effects
 """
 
 func _on_score_counting():
+	
 	if not ready:
 		queue += [["_on_score_counting"]]
 		return
+	
+	print("playing a starting sound")
+	
 	if score.playing:
 		score.stop()
-	score.stream = start_sounds[randi() % starts]
+	
+	# score.stream = start_sounds[randi() % starts]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = start_sounds[randi() % starts]
+	stream.loop = false
+	score.stream = stream
+	
 	score.play()
 
 
 func _on_score_lost(amount):
+	
 	if not ready:
 		queue += [["_on_score_lost"], amount]
 		return
+	
+	print("playing a loss sound")
+	
 	if loss.playing:
 		loss.stop()
-	loss.stream = loss_sounds[randi() % losses]
+	
+	# loss.stream = loss_sounds[randi() % losses]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = loss_sounds[randi() % losses]
+	stream.loop = false
+	loss.stream = stream
+	
 	loss.play()
 
 
 func _on_score_scored(amount):
+	
 	if not ready:
 		queue += [["_on_score_scored"], amount]
 		return
+	
+	print("playing a score sound")
+	
 	if score.playing:
 		score.stop()
-	score.stream = score_sounds[randi() % scores]
+	
+	# score.stream = score_sounds[randi() % scores]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = score_sounds[randi() % scores]
+	stream.loop = false
+	score.stream = stream
+	
 	score.play()
 
 
 func _on_score_won():
+	
 	if not ready:
 		queue += [["_on_score_won"]]
 		return
+	
+	print("playing a won sound")
+	
 	if loss.playing:
 		loss.stop()
-	loss.stream = win_sounds[randi() % wins]
+	
+	# loss.stream = win_sounds[randi() % wins]
+	
+	# NOTE (this is because godot CANNOT for whatever stupid reason turn off looping)
+	stream = win_sounds[randi() % wins]
+	stream.loop = false
+	loss.stream = stream
+	
 	loss.play()
-
+	
