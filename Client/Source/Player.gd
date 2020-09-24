@@ -372,7 +372,7 @@ puppetsync func _make_golfer():
 	self.health.max_life = 300
 	self.health.life = 300
 	self.speed = 1000
-	self.translate(Vector3(0,10,0))
+	self.translate(Vector3(0,3,0))
 	self.role = "golfer"
 	rpc("_spawn_boulder")
 
