@@ -6,7 +6,7 @@ https://godotengine.org/qa/60362/how-can-i-properly-sync-rigidbodies-in-a-3d-mul
 """ # FIXME (documentation missing)
 
 
-puppet var puppet_rotation: Vector3
+puppet var puppet_transform
 puppet var puppet_translation: Vector3
 
 var is_puppet: bool
@@ -30,11 +30,11 @@ func _physics_process(delta):
 		updates += 1
 		if not is_puppet:
 			print("updating... (" + str(updates) + ")")
-			rset("puppet_rotation", rotation)
+			rset("puppet_transform", transform)
 			rset("puppet_translation", translation)
 		if is_puppet:
 			print("getting updates... (" + str(updates) + ")")
-			rotation = puppet_rotation
+			transform = puppet_transform
 			translation = puppet_translation
 
 
