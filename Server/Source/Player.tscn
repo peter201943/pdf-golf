@@ -12,12 +12,6 @@
 [ext_resource path="res://HACK/sounds/sounds.tscn" type="PackedScene" id=10]
 [ext_resource path="res://HACK/change-role/change_role.tscn" type="PackedScene" id=11]
 
-
-
-
-
-
-
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
 
@@ -209,6 +203,7 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -1, 
 
 [node name="music-player" parent="." instance=ExtResource( 5 )]
 playing = false
+shuffled = false
 current_song = 1
 
 [node name="golfer-HACK" parent="." instance=ExtResource( 4 )]

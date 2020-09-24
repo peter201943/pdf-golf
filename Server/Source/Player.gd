@@ -117,7 +117,9 @@ func _unhandled_input(event):
 			paused = false
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if mouse_captured:
-			print("BANG!")
+			# print("BANG!")
+			# fire()
+			rpc("fire")
 	
 	# Escape
 	if event.is_action_pressed("ui_cancel"):
@@ -299,4 +301,47 @@ puppet func play_anim(other_anim):
 	Allow SELF or OTHERS to tell my MODEL to animate
 	"""
 	knight.play_anim(other_anim)
+
+
+
+
+
+
+
+
+"""
+BEGIN SECTION HACK
+
+- beware yee of little faith
+- for here cometh what-all with but no-faith
+- weep thee for the whirlwind...
+"""
+
+puppetsync func fire():
+	"""
+	When someone presses fire, sync it across all puppets
+	"""
+	if is_puppet:
+		print("\tPUPPET: fire!")
+	if not is_puppet:
+		print("\tME: fire!")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
