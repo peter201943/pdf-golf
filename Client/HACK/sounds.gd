@@ -40,3 +40,41 @@ export(Array, Resource) var start_sounds:   Array
 
 
 
+"""
+Health Related Sound Effect Events
+"""
+
+func _on_health_died():
+	pass # Replace with function body.
+
+
+func _on_health_healed(amount):
+	pass # Replace with function body.
+
+
+func _on_health_hurt(amount):
+	pass # Replace with function body.
+
+
+func _on_health_respawned():
+	pass # Replace with function body.
+
+
+"""
+Score Related Sound Effects
+"""
+
+func _on_score_counting():
+	pass # Replace with function body.
+
+
+func _on_score_lost(amount):
+	pass # Replace with function body.
+
+
+func _on_score_scored(amount):
+	pass # Replace with function body.
+
+
+func _on_score_won():
+	pass # Replace with function body.
