@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://Source/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BaksoSapi.otf" type="DynamicFontData" id=2]
@@ -43,6 +43,7 @@
 [ext_resource path="res://character/griefer/scream/scream-6.ogg" type="AudioStream" id=41]
 [ext_resource path="res://character/griefer/scream/scream-0.ogg" type="AudioStream" id=42]
 [ext_resource path="res://HACK/sounds.gd" type="Script" id=43]
+[ext_resource path="res://HACK/change_role.tscn" type="PackedScene" id=44]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -274,19 +275,7 @@ respawn_sounds = [ ExtResource( 39 ) ]
 win_sounds = [ ExtResource( 35 ) ]
 start_sounds = [ ExtResource( 34 ) ]
 
-[node name="change_role" type="OptionButton" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -31.0
-margin_top = -20.0
-margin_right = 31.0
-button_mask = 3
-text = "ROLE"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="change_role" parent="." instance=ExtResource( 44 )]
 [connection signal="pressed" from="HUD/Panel/cancel_button" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="HUD/Panel/quit_button" to="." method="_on_quit_button_pressed"]
 [connection signal="died" from="health" to="sounds" method="_on_health_died"]

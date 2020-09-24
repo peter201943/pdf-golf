@@ -33,7 +33,7 @@
 [ext_resource path="res://misc/countdown.ogg" type="AudioStream" id=31]
 [ext_resource path="res://character/griefer/scream/long-scream-0.ogg" type="AudioStream" id=32]
 
-[node name="sounds" type="Node"]
+[node name="sounds" type="Spatial"]
 script = ExtResource( 1 )
 hurt_sounds = [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ) ]
 heal_sounds = [ ExtResource( 7 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 8 ), ExtResource( 10 ) ]

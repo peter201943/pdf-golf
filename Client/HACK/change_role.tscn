@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://HACK/change_role.gd" type="Script" id=1]
+
+[node name="change_role" type="OptionButton"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -31.0
+margin_top = -20.0
+margin_right = 31.0
+button_mask = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="item_selected" from="." to="." method="_on_change_role_item_selected"]

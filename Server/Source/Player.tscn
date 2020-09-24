@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Source/Player.gd" type="Script" id=1]
 [ext_resource path="res://HACK/golf-ball-HACK.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://score/score.tscn" type="PackedScene" id=8]
 [ext_resource path="res://health/health.tscn" type="PackedScene" id=9]
 [ext_resource path="res://HACK/sounds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://HACK/change_role.tscn" type="PackedScene" id=11]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -217,6 +218,8 @@ current_song = 1
 [node name="score" parent="." instance=ExtResource( 8 )]
 
 [node name="sounds" parent="." instance=ExtResource( 10 )]
+
+[node name="change_role" parent="." instance=ExtResource( 11 )]
 [connection signal="pressed" from="HUD/Panel/cancel_button" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="HUD/Panel/quit_button" to="." method="_on_quit_button_pressed"]
 [connection signal="died" from="health" to="sounds" method="_on_health_died"]
