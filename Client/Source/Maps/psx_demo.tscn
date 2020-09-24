@@ -14,34 +14,34 @@ ambient_light_color = Color( 1, 1, 1, 1 )
 [node name="SpawnPoints" type="Spatial" parent="."]
 
 [node name="0" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.0402, 5.36747 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.0402, 112.683 )
 
 [node name="1" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.87597, 22.0402, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.796, 22.0402, 0 )
 
 [node name="2" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.47234, 22.0402, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 79.9311, 22.0402, 48.6295 )
 
 [node name="3" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.48504, 22.0402, 4.87084 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.0637, 22.0402, 72.1872 )
 
 [node name="4" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.0402, -5.83486 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.0402, 66.4496 )
 
 [node name="5" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.60693, 22.0402, -6.61065 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.9078, 31.3139, 8.90273 )
 
 [node name="6" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.67247, 22.0402, -5.68736 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49.7608, 22.0402, -11.2583 )
 
 [node name="7" type="Position3D" parent="SpawnPoints"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.17222, 22.0402, 4.65063 )
 
 [node name="8" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.29553, 22.0402, 5.74942 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.29553, 22.0402, 138.437 )
 
 [node name="9" type="Position3D" parent="SpawnPoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.15317, 22.0402, 2.28986 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 158.733, 22.0402, 52.417 )
 
 [node name="Players" type="Spatial" parent="."]
 
@@ -65,22 +65,20 @@ transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 14.4784, 0 )
 [node name="0" parent="Ground" instance=ExtResource( 1 )]
 transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0 )
 
+[node name="0" parent="Ground/0" instance=ExtResource( 3 )]
+transform = Transform( 0.0330024, 0, 0.331696, 0, 1, 0, -0.331696, 0, 0.0330024, -1.50757, 19.2706, -1.23849 )
+
+[node name="4" parent="Ground" instance=ExtResource( 1 )]
+transform = Transform( -1.87732, 0, -2.34001, 0, 1, 0, 2.34001, 0, -1.87732, -21.4946, 0, 142.648 )
+
+[node name="0" parent="Ground/4" instance=ExtResource( 3 )]
+transform = Transform( 0.0330024, 0, 0.331696, 0, 1, 0, -0.331696, 0, 0.0330024, -1.50757, 19.2706, -1.23849 )
+
 [node name="1" parent="Ground" instance=ExtResource( 1 )]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 19.8343, 0, 47.0555 )
+transform = Transform( 12.5949, 0, 3.80022, 0, 1, 0, -3.80022, 0, 12.5949, 19.8343, -6.85625, 47.0555 )
 
 [node name="2" parent="Ground" instance=ExtResource( 1 )]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 61.4484, 0, 29.634 )
+transform = Transform( -6.80432, 0, -17.8187, 0, 1, 0, 17.8187, 0, -6.80432, 61.4484, -9.38083, 88.337 )
 
 [node name="3" parent="Ground" instance=ExtResource( 1 )]
 transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 108.323, -9.09258, 79.9093 )
-
-[node name="Mills" type="Spatial" parent="."]
-
-[node name="0" parent="Mills" instance=ExtResource( 3 )]
-transform = Transform( 0.0990071, 0, 0.995087, 0, 1, 0, -0.995087, 0, 0.0990071, -4.5227, 19.2706, -3.71548 )
-
-[node name="1" parent="Mills" instance=ExtResource( 3 )]
-transform = Transform( -0.851059, 0, 0.525071, 0, 1, 0, -0.525071, 0, -0.851059, 20.0974, 18.8839, 47.9817 )
-
-[node name="2" parent="Mills" instance=ExtResource( 3 )]
-transform = Transform( -0.367654, 0, -0.929963, 0, 1, 0, 0.929963, 0, -0.367654, 98.2311, 10.3247, 70.6752 )
