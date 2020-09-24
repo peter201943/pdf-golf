@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Source/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BaksoSapi.otf" type="DynamicFontData" id=2]
@@ -11,6 +11,16 @@
 [ext_resource path="res://score/score.tscn" type="PackedScene" id=9]
 [ext_resource path="res://health/health.tscn" type="PackedScene" id=10]
 [ext_resource path="res://HACK/sounds/sounds.tscn" type="PackedScene" id=11]
+[ext_resource path="res://music/del-rio-bravo.ogg" type="AudioStream" id=12]
+[ext_resource path="res://music/bumbly-march.ogg" type="AudioStream" id=13]
+[ext_resource path="res://music/super-polka.ogg" type="AudioStream" id=14]
+[ext_resource path="res://music/one-eyed-maestro.ogg" type="AudioStream" id=15]
+[ext_resource path="res://music/tango-de-manzana.ogg" type="AudioStream" id=16]
+[ext_resource path="res://music/the-builder.ogg" type="AudioStream" id=17]
+[ext_resource path="res://music/winner-winner.ogg" type="AudioStream" id=18]
+[ext_resource path="res://music/blobby-samba.ogg" type="AudioStream" id=19]
+[ext_resource path="res://music/circus-of-freaks.ogg" type="AudioStream" id=20]
+[ext_resource path="res://music/the-cannery.ogg" type="AudioStream" id=21]
 [ext_resource path="res://HACK/change-role/change_role.tscn" type="PackedScene" id=44]
 
 [sub_resource type="CapsuleMesh" id=1]
@@ -220,6 +230,7 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -1, 
 playing = false
 shuffled = false
 current_song = 2
+playlist = [ ExtResource( 16 ), ExtResource( 13 ), ExtResource( 20 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 12 ), ExtResource( 19 ), ExtResource( 21 ) ]
 
 [node name="golfer-HACK" parent="." instance=ExtResource( 6 )]
 

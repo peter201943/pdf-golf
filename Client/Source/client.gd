@@ -1,7 +1,7 @@
 # tool # FIXME (add tool mode)
 extends Node
-
 # FIXME (rename autoload-name ("network") to "client")
+
 
 
 """
@@ -11,8 +11,6 @@ CLIENT network
 """ # FIXME (documentation missing)
 
 
-# FIXME (documentation missing)
-var player_name = "player 1"
 
  # FIXME (documentation missing)
 signal connection_failed()
@@ -26,6 +24,11 @@ signal game_ended()
  # FIXME (documentation missing)
 signal game_error(what)
 
+
+
+# FIXME (documentation missing)
+var player_name = "player 1"
+
 # FIXME (documentation missing)
 var player_scene = load("res://Source/Player.tscn") # FIXME (fragile link; make external)
 
@@ -34,6 +37,7 @@ var map = "base" # map_name # FIXME (rename to `map_name`)
 
 # FIXME (documentation missing)
 var players = {}
+
 
 
 func _ready():
@@ -149,3 +153,70 @@ func player_disconnected(id):
 	var world = root.get_node(map)
 	world.get_node("Players/" + str(id)).queue_free()  # FIXME (fragile link; make external)
 	print("WE (" + player_name + ") have left THEIR game (player #" + str(id) + ")")
+
+
+
+
+
+"""
+BEGIN SECTION HACK
+
+- beware yee of little faith
+- for here cometh what-all with but no-faith
+- weep thee for the whirlwind...
+"""
+
+remote func add_trap(id: int, last_transform: Transform, trap_name: String):
+	"""
+	Add a Zap Trap (networked RigidBody + Script)
+	- load as a scene
+	- add to `Players` node
+	"""
+	pass
+
+# ORRRR...
+# We could have the golf ball ALWAYS be present!
+
+# remote func add_ball(id: int, last_transform: Transform, golf_ball_name: String):
+# 	"""
+# 	Add a Golf Ball (networked RigidBody + Script)
+# 	- load as a scene
+# 	- add to `Players` node
+# 	"""
+# 	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
