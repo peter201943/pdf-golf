@@ -199,7 +199,7 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -1, 
 
 [node name="music-player" parent="." instance=ExtResource( 5 )]
 playing = false
-shuffled = false
+current_song = 1
 
 [node name="golfer-HACK" parent="." instance=ExtResource( 4 )]
 

@@ -268,5 +268,13 @@ func _check_player() -> void:
 		print("Player: " + str(player))
 
 
-
+func _on_musicpower_pressed():
+	"""
+	Allow in game control of music playback
+	"""
+	if playing:
+		self.playing = false
+		return
+	self.playing = true
+	return
 
